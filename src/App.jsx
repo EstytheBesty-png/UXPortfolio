@@ -6,6 +6,15 @@ const BOOK_RATIO = 620 / 878;
 const VIEWPORT_SIDE_GAP = 120;
 const VIEWPORT_TOP_BOTTOM_GAP = 310;
 
+const NOTEBOOK_TABS = [
+  { label: "Wartekorb", pageIndex: 3, tone: "sage" },
+  { label: "Kangrow", pageIndex: 4, tone: "rose" },
+  { label: "Google Maps", pageIndex: 5, tone: "wheat" },
+  { label: "Visual Design", pageIndex: 6, tone: "mint" },
+  { label: "About", pageIndex: 7, tone: "peach" },
+  { label: "Contact", pageIndex: 8, tone: "lilac" },
+];
+
 function App() {
   const bookRef = useRef();
   const [isOpen, setIsOpen] = useState(false);
@@ -59,6 +68,18 @@ function App() {
     }
     pageFlip.flipNext("top");
     setCloseOnNextClick(false);
+  };
+
+  const handleTabJump = (pageIndex) => {
+    const pageFlip = bookRef.current?.pageFlip();
+    if (!pageFlip) {
+      return;
+    }
+
+    pageFlip.flip(pageIndex, "top");
+    setCloseOnNextClick(false);
+    setHasOpenedNotebook(true);
+    setIsOpen(true);
   };
 
   const availableWidth = Math.max(420, viewport.width - VIEWPORT_SIDE_GAP);
@@ -175,6 +196,21 @@ function App() {
               />
             </section>
           </HTMLFlipBook>
+
+          {hasOpenedNotebook && isOpen && (
+            <aside className="sideTabs" aria-label="Notebook sections">
+              {NOTEBOOK_TABS.map((tab) => (
+                <button
+                  key={tab.label}
+                  type="button"
+                  className={`sideTab sideTab-${tab.tone}`}
+                  onClick={() => handleTabJump(tab.pageIndex)}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </aside>
+          )}
         </div>
 
         <div className="backToStartSlot">
