@@ -7,10 +7,10 @@ const VIEWPORT_SIDE_GAP = 0;
 const VIEWPORT_TOP_BOTTOM_GAP = 0;
 
 const NOTEBOOK_TABS = [
-  { label: "Intro", pageIndex: 1, tone: "wheat" },
+  { label: "Intro", pageIndex: 1, tone: "sun" },
   { label: "Wartekorb", pageIndex: 3, tone: "sage" },
   { label: "Kangrow", pageIndex: 6, tone: "rose" },
-  { label: "Google Maps", pageIndex: 7, tone: "wheat" },
+  { label: "Google Maps", pageIndex: 7, tone: "sky" },
   { label: "Visual Design", pageIndex: 8, tone: "mint" },
   { label: "About", pageIndex: 9, tone: "peach" },
   { label: "Contact", pageIndex: 10, tone: "lilac" },
