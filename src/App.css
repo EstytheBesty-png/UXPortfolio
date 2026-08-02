@@ -25,17 +25,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: clamp(0.75rem, 1.6vw, 1.2rem);
-  padding: clamp(1rem, 2.5vw, 2rem);
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15)),
-    url("/assets/background flowers water.jpeg");
-  background-size: cover;
-  background-position: center center;
-  background-attachment: scroll;
-  background-repeat: no-repeat;
-  padding-top: clamp(0.6rem, 1.4vw, 1.1rem);
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+  background: #eef8df;
   overflow: hidden;
 }
 
@@ -44,22 +37,35 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1.25rem;
+  gap: 0;
+  width: 100%;
+  min-height: 100dvh;
 }
 
 .book-container.closed {
   justify-content: center;
-  padding-left: 0;
 }
 
 .book-container.open {
   justify-content: center;
-  padding-left: 0;
 }
 
 .bookShell {
-  display: inline-flex;
+  display: flex;
   position: relative;
+  width: 100%;
+  height: 100dvh;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.bookFrame {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  flex: 0 0 auto;
 }
 
 .title {
@@ -67,11 +73,11 @@ body {
   display: inline-flex;
   flex-direction: row;
   align-items: baseline;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.7rem;
   margin: 0;
-  padding: 0.62rem 1.7rem;
-  text-align: center;
+  padding: 0.45rem 1.3rem;
+  text-align: left;
   text-shadow: 0 1px 3px rgba(255, 255, 255, 0.45);
   background: linear-gradient(
     180deg,
@@ -81,9 +87,10 @@ body {
   border: 2px solid rgba(188, 157, 120, 0.78);
   border-radius: 6px;
   box-shadow: 10px 12px 26px rgba(84, 58, 36, 0.22);
-  width: min(86vw, 760px);
-  max-width: 90vw;
+  width: auto;
+  max-width: min(82vw, 560px);
   transform: translateY(-4px);
+  align-self: flex-start;
 }
 
 .title::before {
@@ -115,11 +122,17 @@ body {
 }
 
 .book {
+  perspective: 1800px;
+  transform-style: preserve-3d;
   filter: drop-shadow(22px 8px 20px rgba(0, 0, 0, 0.26))
            drop-shadow(18px 24px 34px rgba(0, 0, 0, 0.32));
   box-shadow: none;
   border-radius: 8px;
   transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.book > div {
+  margin: 0 auto;
 }
 
 .book:hover {
@@ -185,16 +198,572 @@ body {
 }
 
 .page {
+  position: relative;
   width: 100%;
   height: 100%;
-  background: #fffdf4;
-  border: 1px solid #e7dcc8;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(252, 247, 235, 0.98) 100%);
+  border: 1px solid rgba(135, 111, 79, 0.55);
   padding: 2rem;
+  padding-bottom: 3.1rem;
   overflow-x: hidden;
   overflow-y: auto;
-  box-shadow: inset 0 0 30px rgba(90, 60, 30, 0.08);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7),
+    inset 0 0 28px rgba(90, 60, 30, 0.12);
   scrollbar-width: thin;
   scrollbar-color: rgba(120, 94, 66, 0.4) rgba(253, 247, 235, 0.6);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.page::after {
+  content: "\00A9 2026 Estelle K\00F6hler. All rights reserved.";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.85rem;
+  text-align: center;
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
+  color: rgba(66, 71, 80, 0.74);
+  pointer-events: none;
+}
+
+.wartekorbChallengePage {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 1.8rem;
+}
+
+.wartekorbChallengeLayout {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 42%);
+  gap: 1.6rem;
+  align-items: start;
+}
+
+.wartekorbChallengeCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.wartekorbChallengeTitle {
+  margin: 0;
+  max-width: 100%;
+  color: #2f3561;
+  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1.12;
+  text-align: left;
+}
+
+.wartekorbChallengeText {
+  margin: 0;
+  max-width: 100%;
+  color: #2f3147;
+  font-size: clamp(0.98rem, 1.08vw, 1.18rem);
+  line-height: 1.6;
+  text-align: left;
+}
+
+.wartekorbChallengeSubheading {
+  margin: 0.4rem 0 0;
+  color: #2f3561;
+  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+  font-size: clamp(1.24rem, 1.5vw, 1.52rem);
+  line-height: 1.2;
+  text-align: left;
+}
+
+.wartekorbChallengeMedia {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.wartekorbChallengeImage {
+  width: min(100%, 340px);
+  height: auto;
+  border-radius: 18px;
+  border: 2px solid rgba(116, 95, 181, 0.35);
+  box-shadow: 0 16px 32px rgba(29, 27, 61, 0.22);
+  object-fit: cover;
+  justify-self: end;
+}
+
+.wartekorbTeamImage {
+  width: min(100%, 320px);
+}
+
+@media (max-width: 980px) {
+  .wartekorbChallengeLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .wartekorbChallengeMedia {
+    align-items: center;
+  }
+
+  .wartekorbChallengeImage {
+    width: min(82%, 320px);
+    justify-self: center;
+  }
+}
+
+.wkCase {
+  --wk-base: #f6f6f6;
+  --wk-primary: #7f68ff;
+  --wk-secondary: #ceff05;
+  --wk-accent: #f23ce6;
+  --wk-accent2: #4047fe;
+  --wk-ink: #26223d;
+  position: relative;
+  margin-top: 0.6rem;
+  min-height: 620px;
+  border: 1px solid rgba(185, 165, 124, 0.55);
+  background: linear-gradient(180deg, #fbf8ef 0%, #f8f2e7 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+  overflow: hidden;
+}
+
+.wkStage {
+  position: relative;
+  min-height: 620px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1.2rem 0.8rem 0;
+  transition: opacity 0.25s ease;
+}
+
+.wkStage-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wkLogoRow {
+  position: relative;
+  margin-top: 0.35rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 94px;
+}
+
+.wkTitleImage {
+  width: min(92%, 520px);
+  height: auto;
+  display: block;
+}
+
+.wkHint {
+  margin: 0;
+  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+  font-size: clamp(2rem, 5.2vw, 2.85rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: 0;
+  color: var(--wk-primary);
+  text-shadow: 0 2px 0 rgba(64, 71, 254, 0.18);
+}
+
+.wkConfettiRow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.1rem;
+}
+
+.wkConfettiRow-top {
+  top: 114px;
+}
+
+.wkConfettiRow-mid {
+  top: 485px;
+  left: 32%;
+  right: 32%;
+  gap: 0.35rem;
+}
+
+.wkDot {
+  display: inline-block;
+  border-radius: 999px;
+  flex: 0 0 auto;
+}
+
+.wkDot-blue {
+  width: 18px;
+  height: 18px;
+  background: var(--wk-accent2);
+}
+
+.wkDot-lime {
+  width: 22px;
+  height: 22px;
+  background: var(--wk-secondary);
+}
+
+.wkDot-pink {
+  width: 20px;
+  height: 20px;
+  background: var(--wk-accent);
+}
+
+.wkDot-blueSmall {
+  width: 10px;
+  height: 10px;
+  background: #7f68ff;
+}
+
+.wkDot-limeSmall {
+  width: 12px;
+  height: 12px;
+  background: var(--wk-secondary);
+}
+
+.wkDot-pinkSmall {
+  width: 11px;
+  height: 11px;
+  background: var(--wk-accent);
+}
+
+.wkPullFrame {
+  position: relative;
+  margin-top: 150px;
+  width: min(78%, 322px);
+  min-height: 350px;
+  border: 2px solid rgba(127, 104, 255, 0.78);
+  background: rgba(255, 255, 255, 0.36);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1.1rem;
+}
+
+.wkArrow {
+  width: 0;
+  height: 0;
+  margin-top: 0.35rem;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-bottom: 22px solid var(--wk-primary);
+}
+
+.wkCenterIllustration {
+  position: relative;
+  width: 185px;
+  margin-top: 0.65rem;
+  padding-top: 22px;
+}
+
+.wkHandle {
+  position: absolute;
+  top: -8px;
+  width: 58px;
+  height: 24px;
+  border-top: 5px solid #ceff05;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-radius: 22px 22px 0 0;
+  z-index: 3;
+}
+
+.wkHandle-left {
+  left: 18px;
+  transform: rotate(-12deg);
+}
+
+.wkHandle-right {
+  right: 18px;
+  transform: rotate(12deg);
+}
+
+.wkBasketBody {
+  position: relative;
+  width: 100%;
+  min-height: 84px;
+  border-radius: 10px 10px 20px 20px;
+  background: var(--wk-secondary);
+  border: 2px solid rgba(127, 104, 255, 0.25);
+  box-shadow:
+    0 7px 10px rgba(64, 71, 254, 0.15),
+    inset 0 -8px 11px rgba(127, 104, 255, 0.12);
+}
+
+.wkBasketBody::before,
+.wkBasketBody::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  width: 8px;
+  height: 24px;
+  border: 2px solid #ffffff;
+  border-top: 0;
+  border-radius: 0 0 8px 8px;
+  opacity: 0.95;
+}
+
+.wkBasketBody::before {
+  left: 52px;
+}
+
+.wkBasketBody::after {
+  right: 52px;
+}
+
+.wkPaperPull {
+  position: relative;
+  width: 120px;
+  margin: 0 auto -10px;
+  z-index: 5;
+  transition: transform 0.18s ease-out;
+}
+
+.wkPaperPull-active {
+  transition: none;
+}
+
+.wkPullTag {
+  width: 100%;
+  border: 2px solid rgba(127, 104, 255, 0.45);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  padding: 0.18rem 0.3rem;
+  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #5f57c9;
+  background: #fffefb;
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+.wkPaperLines {
+  position: relative;
+  min-height: 105px;
+  border: 2px solid rgba(127, 104, 255, 0.45);
+  border-top: 0;
+  background:
+    linear-gradient(90deg, rgba(242, 60, 230, 0.55) 0 1px, transparent 1px),
+    repeating-linear-gradient(
+      180deg,
+      rgba(64, 71, 254, 0.22) 0,
+      rgba(64, 71, 254, 0.22) 1px,
+      rgba(255, 255, 255, 0.95) 1px,
+      rgba(255, 255, 255, 0.95) 13px
+    );
+}
+
+.wkPaperLines::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: -10px;
+  height: 10px;
+  background: repeating-radial-gradient(circle at 5px 10px, #594f45 0 1px, transparent 1px 6px);
+}
+
+.wkBaseBar {
+  width: 100%;
+  height: 52px;
+  margin-top: -4px;
+  border-radius: 8px;
+  background: var(--wk-accent);
+}
+
+.wkCasePaper {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 8px;
+  bottom: 8px;
+  z-index: 6;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(248, 244, 237, 0.98)),
+    repeating-linear-gradient(
+      180deg,
+      rgba(64, 71, 254, 0.07) 0,
+      rgba(64, 71, 254, 0.07) 1px,
+      rgba(255, 255, 255, 0) 1px,
+      rgba(255, 255, 255, 0) 31px
+    );
+  border: 3px solid rgba(127, 104, 255, 0.75);
+  box-shadow: 0 22px 34px rgba(39, 39, 53, 0.34);
+  transform: translateY(104%);
+  transition: transform 0.35s ease;
+  overflow-y: auto;
+  padding: 1.1rem 1.2rem 1.3rem;
+}
+
+.wkCasePaper-open {
+  transform: translateY(0%);
+}
+
+.wkPaperTopBar {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: -0.2rem -0.2rem 0.8rem;
+  padding: 0.6rem 0.8rem;
+  background: linear-gradient(90deg, var(--wk-primary), var(--wk-accent2));
+  color: #ffffff;
+}
+
+.wkPaperTopBar p {
+  margin: 0;
+  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+  font-size: 1.22rem;
+  font-weight: 700;
+}
+
+.wkClosePaper {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2f2d3a;
+  background: var(--wk-secondary);
+  cursor: pointer;
+}
+
+.wkCasePaper h3 {
+  margin-bottom: 0.35rem;
+  color: var(--wk-primary);
+  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+  font-size: 1.35rem;
+}
+
+.wkCasePaper p,
+.wkCasePaper li {
+  color: #2a2940;
+  font-size: 1rem;
+  line-height: 1.58;
+}
+
+.wkCasePaper ul {
+  margin-top: 0.5rem;
+  padding-left: 1.2rem;
+}
+
+.wkSticker {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  clip-path: polygon(
+    50% 0%,
+    62% 35%,
+    100% 50%,
+    62% 65%,
+    50% 100%,
+    38% 65%,
+    0% 50%,
+    38% 35%
+  );
+}
+
+.wkSticker-limeBurst {
+  transform: scale(1.25);
+  background: var(--wk-secondary);
+}
+
+.wkSticker-blueStar {
+  background: var(--wk-accent2);
+}
+
+.wkSticker-pinkSpark {
+  background: var(--wk-accent);
+}
+
+.wkSticker-limeSpark {
+  width: 16px;
+  height: 16px;
+  background: var(--wk-secondary);
+}
+
+.wkBottomRibbon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.wkBottomStar {
+  width: 45px;
+  height: 45px;
+  clip-path: polygon(50% 0%, 61% 36%, 100% 50%, 61% 64%, 50% 100%, 39% 64%, 0% 50%, 39% 36%);
+}
+
+.wkBottomStar-pink {
+  background: var(--wk-accent);
+}
+
+.wkBadge {
+  width: 80px;
+  height: 62px;
+  background: var(--wk-primary);
+  clip-path: polygon(
+    50% 0%,
+    72% 6%,
+    100% 28%,
+    92% 56%,
+    70% 100%,
+    30% 100%,
+    8% 56%,
+    0% 28%,
+    28% 6%
+  );
+  display: grid;
+  place-items: center;
+}
+
+.wkBadgeBasket {
+  position: relative;
+  width: 38px;
+  height: 24px;
+  border-radius: 5px 5px 9px 9px;
+  background: var(--wk-secondary);
+}
+
+.wkBadgeBasket::before,
+.wkBadgeBasket::after {
+  content: "";
+  position: absolute;
+  top: -11px;
+  width: 13px;
+  height: 10px;
+  border-top: 3px solid var(--wk-secondary);
+  border-radius: 8px 8px 0 0;
+}
+
+.wkBadgeBasket::before {
+  left: 3px;
+  transform: rotate(-12deg);
+}
+
+.wkBadgeBasket::after {
+  right: 3px;
+  transform: rotate(12deg);
 }
 
 .cover {
@@ -207,49 +776,8 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
-}
-
-.backToStartSlot {
-  min-height: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.backToStart {
-  position: relative;
-  border: 2px solid rgba(188, 157, 120, 0.78);
-  border-radius: 8px;
-  padding: 0.62rem 1.45rem;
-  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-  font-size: 1.06rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #5e7f45;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.44);
-  background: linear-gradient(
-    180deg,
-    rgba(253, 244, 224, 0.96) 0%,
-    rgba(245, 229, 201, 0.94) 100%
-  );
-  box-shadow: 10px 12px 24px rgba(84, 58, 36, 0.22);
-  cursor: pointer;
-  transition: transform 0.2s ease, filter 0.2s ease;
-  overflow: hidden;
-}
-
-.backToStart::before {
-  content: "";
-  position: absolute;
-  inset: 5px;
-  border: 1px dashed rgba(168, 133, 97, 0.75);
-  border-radius: 5px;
-  pointer-events: none;
-}
-
-.backToStart:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.02);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 @media (max-width: 980px) {
@@ -261,6 +789,14 @@ body {
     width: 82px;
     font-size: 0.88rem;
     padding: 0.36rem 0.5rem;
+  }
+
+  .wkHint {
+    font-size: 2.1rem;
+  }
+
+  .wkPullFrame {
+    margin-top: 142px;
   }
 }
 
@@ -275,5 +811,53 @@ body {
     font-size: 0.78rem;
     padding: 0.28rem 0.44rem;
     border-radius: 0 8px 8px 0;
+  }
+
+  .wkCase {
+    min-height: 560px;
+  }
+
+  .wkStage {
+    min-height: 560px;
+  }
+
+  .wkTitleImage {
+    width: min(94%, 460px);
+  }
+
+  .wkHint {
+    font-size: 1.85rem;
+  }
+
+  .wkPullFrame {
+    margin-top: 152px;
+    width: min(88%, 295px);
+  }
+
+  .wkConfettiRow-top {
+    top: 122px;
+    padding: 0 0.65rem;
+  }
+
+  .wkBottomRibbon {
+    gap: 0.3rem;
+  }
+
+  .wkBottomStar {
+    width: 34px;
+    height: 34px;
+  }
+
+  .wkBadge {
+    width: 64px;
+    height: 52px;
+  }
+
+  .wkCasePaper {
+    left: 6px;
+    right: 6px;
+    top: 6px;
+    bottom: 6px;
+    padding: 0.9rem 0.95rem 1rem;
   }
 }
