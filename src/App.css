@@ -239,12 +239,15 @@ body {
   margin-top: 0.8rem;
 }
 
-.page h2 {
+.page h2,
+.wartekorbChallengeTitle {
   color: #2f3561;
   font-family: "Cormorant Garamond", Garamond, Georgia, serif;
   font-size: clamp(1.5rem, 2.2vw, 2rem);
   line-height: 1.12;
   text-align: left;
+  margin: 0;
+  font-weight: 700;
 }
 
 .page h3 {
@@ -472,11 +475,6 @@ body {
 .wartekorbChallengeTitle {
   margin: 0;
   max-width: 100%;
-  color: #2f3561;
-  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-  font-size: clamp(1.5rem, 2.2vw, 2rem);
-  line-height: 1.12;
-  text-align: left;
 }
 
 .wartekorbChallengeText {
@@ -513,6 +511,10 @@ body {
   background: transparent;
   cursor: zoom-in;
   line-height: 0;
+}
+
+.wartekorbImageButton-left {
+  align-self: flex-start;
 }
 
 .wartekorbChallengeImage {
@@ -589,8 +591,8 @@ body {
 }
 
 .pageFourCaseStudy .wartekorbChallengeTitle {
-  font-size: clamp(1.48rem, 1.95vw, 1.86rem);
-  line-height: 1.1;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1.12;
 }
 
 .pageFourCaseStudy .wartekorbChallengeSubheading {
@@ -640,6 +642,11 @@ body {
 
 .pageFourCaseStudy .pageFourImage-large {
   max-width: 560px;
+}
+
+.pageFourCaseStudy .pageFourImage-storyboard {
+  max-width: 100%;
+  width: min(100%, 820px);
 }
 
 @media (max-width: 980px) {

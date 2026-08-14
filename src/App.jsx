@@ -7,13 +7,23 @@ const VIEWPORT_SIDE_GAP = 0;
 const VIEWPORT_TOP_BOTTOM_GAP = 0;
 
 const NOTEBOOK_TABS = [
-  { label: "Intro", pageIndex: 1, tone: "sun" },
+  { label: "Intro", pageIndex: 2, tone: "sun" },
   { label: "Wartekorb", pageIndex: 3, tone: "sage" },
-  { label: "Kangrow", pageIndex: 6, tone: "rose" },
-  { label: "Google Maps", pageIndex: 7, tone: "sky" },
-  { label: "Visual Design", pageIndex: 8, tone: "mint" },
-  { label: "Hobbies", pageIndex: 2, tone: "peach" },
-  { label: "Contact", pageIndex: 10, tone: "lilac" },
+  { label: "Kangrow", pageIndex: 9, tone: "rose" },
+  { label: "Google Maps", pageIndex: 10, tone: "sky" },
+  { label: "Visual Design", pageIndex: 11, tone: "mint" },
+  { label: "Hobbies", pageIndex: 12, tone: "peach" },
+  { label: "Contact", pageIndex: 13, tone: "lilac" },
+];
+
+const TOC_ITEMS = [
+  { label: "Intro", pageIndex: 2, pageNumber: 2 },
+  { label: "Wartekorb", pageIndex: 3, pageNumber: 3 },
+  { label: "Kangrow", pageIndex: 9, pageNumber: 9 },
+  { label: "Google Maps", pageIndex: 10, pageNumber: 10 },
+  { label: "Visual Design Challenges", pageIndex: 11, pageNumber: 11 },
+  { label: "Hobbies", pageIndex: 12, pageNumber: 12 },
+  { label: "Contact", pageIndex: 13, pageNumber: 13 },
 ];
 
 function App() {
@@ -167,15 +177,7 @@ function App() {
               <section className="page tocPage" data-page-number="1">
                 <h2>Table of Contents</h2>
                 <ul className="tocList">
-                  {[
-                    { label: "Intro", pageIndex: 1, pageNumber: 1 },
-                    { label: "Wartekorb", pageIndex: 3, pageNumber: 3 },
-                    { label: "Kangrow", pageIndex: 6, pageNumber: 6 },
-                    { label: "Google Maps", pageIndex: 7, pageNumber: 7 },
-                    { label: "Visual Design Challenges", pageIndex: 8, pageNumber: 8 },
-                    { label: "Hobbies", pageIndex: 2, pageNumber: 2 },
-                    { label: "Contact", pageIndex: 10, pageNumber: 10 },
-                  ].map((item) => (
+                  {TOC_ITEMS.map((item) => (
                     <li key={item.label}>
                       <button
                         type="button"
@@ -428,24 +430,175 @@ function App() {
                 </div>
               </section>
 
-              <section className="page" aria-label="Wartekorb page" data-page-number="5" />
+              <section className="page pageFourCaseStudy" aria-label="Wartekorb page" data-page-number="5">
+                <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <h2 className="wartekorbChallengeTitle">The Core Challenge (How Might We)</h2>
+                  <p className="wartekorbChallengeText">
+                    &ldquo;How might we help consumption-oriented people sustainably reduce their
+                    impulse purchases without eliminating the joy of shopping?&rdquo;
+                  </p>
 
-              <section className="page" data-page-number="6">
+                  <h3 className="wartekorbChallengeSubheading">Testable Hypothesis</h3>
+                  <p className="wartekorbChallengeText">
+                    We hypothesized that introducing a mandatory &lsquo;decision-pause&rsquo;
+                    (friction) before a purchase would interrupt the emotional buying cycle and
+                    significantly reduce impulse acquisitions.
+                  </p>
+
+                  <h3 className="wartekorbChallengeSubheading">
+                    Rapid Sketching &amp; Concept Exploration
+                  </h3>
+                  <p className="wartekorbChallengeText">
+                    Through rapid, individual sketching rounds, we explored diverse mechanisms
+                    for creating meaningful friction—from reflective questionnaires to visual
+                    budget impact charts—before converging on the most effective concepts for
+                    prototyping.
+                  </p>
+
+                  <button
+                    type="button"
+                    className="wartekorbImageButton wartekorbImageButton-left"
+                    onPointerDownCapture={stopBookFlipEvent}
+                    onMouseDownCapture={stopBookFlipEvent}
+                    onTouchStartCapture={stopBookFlipEvent}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      openLightbox("/assets/Crazy 8 Sketches.png", "Crazy 8 sketches");
+                    }}
+                    aria-label="Open larger Crazy 8 sketches image"
+                  >
+                    <img
+                      src="/assets/Crazy 8 Sketches.png"
+                      alt="Crazy 8 sketches"
+                      className="wartekorbChallengeImage pageFourImage pageFourImage-large"
+                    />
+                  </button>
+
+                  <button
+                    type="button"
+                    className="wartekorbImageButton wartekorbImageButton-left"
+                    onPointerDownCapture={stopBookFlipEvent}
+                    onMouseDownCapture={stopBookFlipEvent}
+                    onTouchStartCapture={stopBookFlipEvent}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      openLightbox("/assets/Hypothesis.png", "Hypothesis visual");
+                    }}
+                    aria-label="Open larger Hypothesis image"
+                  >
+                    <img
+                      src="/assets/Hypothesis.png"
+                      alt="Hypothesis visual"
+                      className="wartekorbChallengeImage pageFourImage pageFourImage-large"
+                    />
+                  </button>
+                </div>
+              </section>
+
+              <section className="page pageFourCaseStudy" aria-label="Wartekorb research page" data-page-number="6">
+                <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <h3 className="wartekorbChallengeSubheading">Defining the Critical Path (Storyboard)</h3>
+                  <p className="wartekorbChallengeText">
+                    We synthesized our individual concepts into a single, unified user journey. We
+                    mapped out the critical path required to intervene during an impulse purchase,
+                    carefully defining the onboarding experience and the difference between online
+                    and offline shopping contexts.
+                  </p>
+
+                  <h3 className="wartekorbChallengeSubheading">Scoping the MVP (Storymapping)</h3>
+                  <p className="wartekorbChallengeText">
+                    To translate our visual flow into a buildable architecture, we created a User
+                    Story Map. By aligning features with our core Jobs-To-Be-Done, we were able to
+                    strictly prioritize essential functions for the prototype and intentionally scope
+                    out secondary features.
+                  </p>
+
+                  <button
+                    type="button"
+                    className="wartekorbImageButton wartekorbImageButton-left"
+                    onPointerDownCapture={stopBookFlipEvent}
+                    onMouseDownCapture={stopBookFlipEvent}
+                    onTouchStartCapture={stopBookFlipEvent}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      openLightbox("/assets/Storyboard.png", "Storyboard");
+                    }}
+                    aria-label="Open larger Storyboard image"
+                  >
+                    <img
+                      src="/assets/Storyboard.png"
+                      alt="Storyboard"
+                      className="wartekorbChallengeImage pageFourImage pageFourImage-storyboard"
+                    />
+                  </button>
+                </div>
+              </section>
+
+              <section className="page pageFourCaseStudy" aria-label="Wartekorb concept page" data-page-number="7">
+                <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <h2 className="wartekorbChallengeTitle">Concept Development</h2>
+                  <p className="wartekorbChallengeText">
+                    We translated research insights into a design concept that introduces a brief
+                    reflective moment before checkout. This pause encourages users to reconsider
+                    their emotional urgency and gives them a clearer view of the trade-offs.
+                  </p>
+                  <p className="wartekorbChallengeText">
+                    The design language focused on clarity, warmth, and supportive prompts rather
+                    than guilt or restriction. The experience was meant to feel intentional,
+                    calm, and empowering rather than punitive.
+                  </p>
+                </div>
+              </section>
+
+              <section className="page pageFourCaseStudy" aria-label="Wartekorb testing page" data-page-number="8">
+                <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <h2 className="wartekorbChallengeTitle">Prototype &amp; Testing</h2>
+                  <p className="wartekorbChallengeText">
+                    We prototyped the decision-pause flow and tested it with participants who
+                    regularly shopped online. The strongest feedback was that the pause felt helpful
+                    when it was framed as self-control, not as an obstacle.
+                  </p>
+                  <p className="wartekorbChallengeText">
+                    The final concept balanced friction and delight: users were given a thoughtful
+                    checkpoint, quick budgeting feedback, and a feeling of agency before completing
+                    the purchase.
+                  </p>
+                </div>
+              </section>
+
+              <section className="page" data-page-number="9">
                 <h2>Kangrow</h2>
                 <p>Case study preview.</p>
               </section>
 
-              <section className="page" data-page-number="7">
+              <section className="page" data-page-number="10">
                 <h2>Google Maps</h2>
                 <p>Case study preview.</p>
               </section>
 
-              <section className="page" data-page-number="8">
+              <section className="page" data-page-number="11">
                 <h2>Visual Design Challenges</h2>
                 <p>Show two visual design projects here.</p>
               </section>
 
-              <section className="page" data-page-number="10">
+              <section className="page aboutMePage" data-page-number="12">
+                <h2>Hobbies</h2>
+                <div className="aboutMeLayout">
+                  <div className="aboutMeSection">
+                    <p>
+                      Outside of design, I love exploring creative hobbies that keep me curious,
+                      inspired, and grounded.
+                    </p>
+                    <p>
+                      I enjoy photography, discovering new cafés, reading, traveling, and spending
+                      time in nature. These moments often spark ideas for more thoughtful,
+                      human-centered design work.
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <section className="page" data-page-number="13">
                 <h2>Contact</h2>
                 <p>Add your email, LinkedIn, portfolio links, or CV here.</p>
               </section>
@@ -503,6 +656,10 @@ function App() {
               src={lightboxImage.src}
               alt={lightboxImage.alt}
               className="lightboxImage"
+              onClick={(event) => {
+                event.stopPropagation();
+                closeLightbox();
+              }}
             />
           </div>
         </div>
