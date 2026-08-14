@@ -12,7 +12,7 @@ const NOTEBOOK_TABS = [
   { label: "Kangrow", pageIndex: 6, tone: "rose" },
   { label: "Google Maps", pageIndex: 7, tone: "sky" },
   { label: "Visual Design", pageIndex: 8, tone: "mint" },
-  { label: "About", pageIndex: 9, tone: "peach" },
+  { label: "Hobbies", pageIndex: 2, tone: "peach" },
   { label: "Contact", pageIndex: 10, tone: "lilac" },
 ];
 
@@ -164,24 +164,67 @@ function App() {
                 />
               </section>
 
-              <section className="page" data-page-number="1">
+              <section className="page tocPage" data-page-number="1">
                 <h2>Table of Contents</h2>
-                <ul>
-                  <li>Wartekorb</li>
-                  <li>Kangrow</li>
-                  <li>Google Maps</li>
-                  <li>Visual Design Challenges</li>
-                  <li>About me</li>
-                  <li>Contact</li>
+                <ul className="tocList">
+                  {[
+                    { label: "Intro", pageIndex: 1, pageNumber: 1 },
+                    { label: "Wartekorb", pageIndex: 3, pageNumber: 3 },
+                    { label: "Kangrow", pageIndex: 6, pageNumber: 6 },
+                    { label: "Google Maps", pageIndex: 7, pageNumber: 7 },
+                    { label: "Visual Design Challenges", pageIndex: 8, pageNumber: 8 },
+                    { label: "Hobbies", pageIndex: 2, pageNumber: 2 },
+                    { label: "Contact", pageIndex: 10, pageNumber: 10 },
+                  ].map((item) => (
+                    <li key={item.label}>
+                      <button
+                        type="button"
+                        className="tocLink"
+                        onClick={() => handleTabJump(item.pageIndex)}
+                      >
+                        <span>{item.label}</span>
+                        <span className="tocPageNumber">{item.pageNumber}</span>
+                      </button>
+                    </li>
+                  ))}
                 </ul>
               </section>
 
-              <section className="page" data-page-number="2">
-                <h2>Mood Tracker</h2>
-                <p>How are you feeling today?</p>
-                <button>🌸 Happy</button>
-                <button>🌿 Calm</button>
-                <button>🍓 Inspired</button>
+              <section className="page aboutMePage" data-page-number="2">
+                <h2>Introduction</h2>
+                <div className="aboutMeLayout">
+                  <div className="aboutMeSection">
+                    <div className="aboutMePhotoPlaceholder" aria-label="Profile photo placeholder">
+                      Photo Placeholder
+                    </div>
+
+                    <p>
+                      Hi, I&apos;m Estelle — a UX designer focused on creating meaningful,
+                      human-centered experiences that blend clarity, emotion, and function.
+                    </p>
+                    <p>
+                      My work is guided by curiosity, research, and a love for turning complex
+                      ideas into intuitive interactions. I enjoy exploring how thoughtful design
+                      can make digital products feel more useful, accessible, and memorable.
+                    </p>
+                  </div>
+
+                  <div className="moodTrackerPanel">
+                    <h3>Mood Tracker</h3>
+                    <p>How are you feeling today?</p>
+                    <div className="moodTrackerGrid" aria-label="Mood tracker options">
+                      <button type="button" className="moodOption">
+                        🌸 Happy
+                      </button>
+                      <button type="button" className="moodOption">
+                        🌿 Calm
+                      </button>
+                      <button type="button" className="moodOption">
+                        🍓 Inspired
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </section>
 
               <section
@@ -400,14 +443,6 @@ function App() {
               <section className="page" data-page-number="8">
                 <h2>Visual Design Challenges</h2>
                 <p>Show two visual design projects here.</p>
-              </section>
-
-              <section className="page" data-page-number="9">
-                <h2>About Me</h2>
-                <p>
-                  I am a UX designer who enjoys research, visual storytelling,
-                  accessibility, and thoughtful digital experiences.
-                </p>
               </section>
 
               <section className="page" data-page-number="10">
