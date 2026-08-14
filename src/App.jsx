@@ -531,6 +531,35 @@ function App() {
                       className="wartekorbChallengeImage pageFourImage pageFourImage-storyboard"
                     />
                   </button>
+
+                  <h2 className="wartekorbChallengeTitle">Visual Strategy &amp; Art Direction</h2>
+                  <h3 className="wartekorbChallengeSubheading">Strategic Visual Divergence</h3>
+                  <p className="wartekorbChallengeText">
+                    To establish our brand identity, we explored two starkly divergent visual
+                    paths: a calm, minimalist aesthetic (typical for mindfulness tools) and a
+                    highly vibrant, stimulating direction.
+                  </p>
+
+                  <h3 className="wartekorbChallengeSubheading">The Design Rationale</h3>
+                  <p className="wartekorbChallengeText">
+                    We strategically selected the Vibrant direction. We realized that to
+                    successfully intercept a user during an impulse-buying high, our app could
+                    not feel like a boring, restrictive financial tool. It needed to be just as
+                    visually engaging and energetic as the e-commerce platforms they were
+                    browsing. This allowed us to build a fresh, gamified, and distinct design
+                    system that makes intentional friction feel rewarding.
+                  </p>
+
+                  <h3 className="wartekorbChallengeSubheading">
+                    Brand Identity: Disrupting &ldquo;Eco&rdquo; Tropes
+                  </h3>
+                  <p className="wartekorbChallengeText">
+                    We intentionally avoided the muted, nature-based aesthetics typical of
+                    sustainability tools. To effectively intercept impulse buyers, the app needed
+                    to mirror the high-energy, dopamine-driven environment of e-commerce. We
+                    developed a bold, expressive identity that reframes &ldquo;restraint&rdquo; not as a
+                    restriction, but as a playful, empowering choice.
+                  </p>
                 </div>
               </section>
 

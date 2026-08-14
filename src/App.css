@@ -647,6 +647,7 @@ body {
 .pageFourCaseStudy .pageFourImage-storyboard {
   max-width: 100%;
   width: min(100%, 820px);
+  margin-bottom: 2.25rem;
 }
 
 @media (max-width: 980px) {
@@ -713,6 +714,10 @@ body {
   .pageFourCaseStudy .pageFourImage-small,
   .pageFourCaseStudy .pageFourImage-large {
     max-width: 100%;
+  }
+
+  .pageFourCaseStudy .pageFourImage-storyboard {
+    margin-bottom: 0.8rem;
   }
 }
 
