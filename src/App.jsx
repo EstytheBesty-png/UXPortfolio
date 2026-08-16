@@ -42,7 +42,7 @@ const MOOD_OPTIONS = [
 
 function App() {
   const bookRef = useRef();
-  const frontCoverRef = useRef(null);
+  const startPromptHideTimerRef = useRef(null);
   const lightboxCloseButtonRef = useRef(null);
   const lastFocusedElementRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -50,6 +50,7 @@ function App() {
   const [closeOnNextClick, setCloseOnNextClick] = useState(false);
   const [lightboxImage, setLightboxImage] = useState(null);
   const [selectedMood, setSelectedMood] = useState(null);
+  const [showStartPrompt, setShowStartPrompt] = useState(true);
   const [viewport, setViewport] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -86,29 +87,6 @@ function App() {
     lastFocusedElementRef.current?.focus?.();
   }, [lightboxImage]);
 
-  useEffect(() => {
-    const cover = frontCoverRef.current;
-    if (!cover) {
-      return;
-    }
-
-    const stopCoverGesture = (event) => {
-      event.stopPropagation();
-    };
-    const captureOptions = { capture: true };
-    const gestureEvents = ["pointerdown", "mousedown", "touchstart"];
-
-    gestureEvents.forEach((eventName) => {
-      cover.addEventListener(eventName, stopCoverGesture, captureOptions);
-    });
-
-    return () => {
-      gestureEvents.forEach((eventName) => {
-        cover.removeEventListener(eventName, stopCoverGesture, captureOptions);
-      });
-    };
-  }, []);
-
   const handleFlip = (e) => {
     const pageIndex = e.data;
     const pageFlip = bookRef.current?.pageFlip();
@@ -117,6 +95,9 @@ function App() {
     const isCoverPage = pageIndex === 0 || pageIndex === lastPageIndex;
 
     setIsOpen(!isCoverPage);
+    if (pageIndex === 0) {
+      setShowStartPrompt(true);
+    }
     if (pageIndex !== 0) {
       setHasOpenedNotebook(true);
     }
@@ -135,16 +116,26 @@ function App() {
     setCloseOnNextClick(false);
   };
 
-  const handleCoverClick = (event) => {
-    event.stopPropagation();
-    const pageFlip = bookRef.current?.pageFlip();
-    if (!pageFlip) {
-      return;
+  const hideStartPrompt = () => {
+    if (startPromptHideTimerRef.current) {
+      window.clearTimeout(startPromptHideTimerRef.current);
     }
-    pageFlip.turnToPage(1);
-    setHasOpenedNotebook(true);
-    setIsOpen(true);
-    setCloseOnNextClick(false);
+
+    startPromptHideTimerRef.current = window.setTimeout(() => {
+      setShowStartPrompt(false);
+      startPromptHideTimerRef.current = null;
+    }, 1400);
+  };
+
+  const handleCoverPointerDown = (event) => {
+    hideStartPrompt();
+    event.preventDefault();
+    event.stopPropagation();
+
+    const pageFlip = bookRef.current?.pageFlip();
+    if (pageFlip) {
+      pageFlip.flip(1, "top");
+    }
   };
 
   const handleTabJump = (pageIndex) => {
@@ -171,7 +162,11 @@ function App() {
   const handleBookPointerDown = (event) => {
     const interactiveTarget = event.target.closest?.("button, a, input, textarea, select");
     const frontCover = event.target.closest?.('[aria-label="Journal cover"]');
-    if (interactiveTarget || frontCover) {
+    if (frontCover) {
+      handleCoverPointerDown(event);
+      return;
+    }
+    if (interactiveTarget) {
       return;
     }
 
@@ -232,6 +227,14 @@ function App() {
             onMouseDownCapture={handleBookPointerDown}
             onTouchStartCapture={handleBookPointerDown}
           >
+            {showStartPrompt && !isOpen && (
+              <aside className="startPrompt" aria-label="How to begin">
+                <span className="startPromptTitle">LET&apos;S START THE JOURNEY</span>
+                <span className="startPromptArrow" aria-hidden="true">✧</span>
+                <span className="startPromptHint">flip to begin</span>
+              </aside>
+            )}
+
             <HTMLFlipBook
               ref={bookRef}
               width={bookWidth}
@@ -245,7 +248,7 @@ function App() {
               showCover={true}
               startPage={0}
               drawShadow={false}
-              flippingTime={500}
+              flippingTime={800}
               useMouseEvents={true}
               showPageCorners={true}
               mobileScrollSupport={true}
@@ -253,10 +256,8 @@ function App() {
               onFlip={handleFlip}
             >
               <section
-                ref={frontCoverRef}
                 className="page cover"
                 aria-label="Journal cover"
-                onClick={handleCoverClick}
               >
                 <img
                   src="/assets/notebook cover brunch newspaper.jpeg"
@@ -297,7 +298,9 @@ function App() {
 
                     <div className="aboutMeIntroCopy">
                       <p>
-                        <span className="aboutMeIntroGreeting">Hi, I&apos;m Estelle</span>
+                        <span className="aboutMeIntroGreeting">
+                          Hi, I&apos;m Estelle <span aria-hidden="true">👋</span>
+                        </span>
                         <span className="aboutMeIntroStatement">
                           A UX Designer creating human-centred experiences for whatever comes next.
                         </span>
@@ -713,28 +716,49 @@ function App() {
                 </div>
 
                 <div className="pageSevenDesignImages" aria-label="Design system visuals">
-                  <button
-                    type="button"
-                    className="wartekorbImageButton pageSevenDesignImageButton"
-                    onPointerDownCapture={stopBookFlipEvent}
-                    onMouseDownCapture={stopBookFlipEvent}
-                    onTouchStartCapture={stopBookFlipEvent}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      openLightbox("/assets/Visuelle Leitidee.png", "Visuelle Leitidee");
-                    }}
-                    aria-label="Open larger Visuelle Leitidee image"
-                  >
-                    <img
-                      src="/assets/Visuelle Leitidee.png"
-                      alt="Visuelle Leitidee"
-                      className="wartekorbChallengeImage pageSevenDesignImage"
-                    />
-                  </button>
+                  <div className="pageSevenDesignTopRow">
+                    <button
+                      type="button"
+                      className="wartekorbImageButton pageSevenDesignImageButton"
+                      onPointerDownCapture={stopBookFlipEvent}
+                      onMouseDownCapture={stopBookFlipEvent}
+                      onTouchStartCapture={stopBookFlipEvent}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        openLightbox("/assets/Visuelle Leitidee.png?v=2", "Visuelle Leitidee");
+                      }}
+                      aria-label="Open larger Visuelle Leitidee image"
+                    >
+                      <img
+                        src="/assets/Visuelle Leitidee.png?v=2"
+                        alt="Visuelle Leitidee"
+                        className="wartekorbChallengeImage pageSevenDesignImage pageSevenDesignImage-leitidee"
+                      />
+                    </button>
+
+                    <button
+                      type="button"
+                      className="wartekorbImageButton pageSevenDesignImageButton"
+                      onPointerDownCapture={stopBookFlipEvent}
+                      onMouseDownCapture={stopBookFlipEvent}
+                      onTouchStartCapture={stopBookFlipEvent}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        openLightbox("/assets/Brand Identity.png", "Brand Identity");
+                      }}
+                      aria-label="Open larger Brand Identity image"
+                    >
+                      <img
+                        src="/assets/Brand Identity.png"
+                        alt="Brand Identity"
+                        className="wartekorbChallengeImage pageSevenDesignImage pageSevenDesignImage-brand"
+                      />
+                    </button>
+                  </div>
 
                   <button
                     type="button"
-                    className="wartekorbImageButton pageSevenDesignImageButton"
+                    className="wartekorbImageButton pageSevenDesignImageButton pageSevenDesignImageButton-final"
                     onPointerDownCapture={stopBookFlipEvent}
                     onMouseDownCapture={stopBookFlipEvent}
                     onTouchStartCapture={stopBookFlipEvent}
@@ -747,26 +771,70 @@ function App() {
                     <img
                       src="/assets/Final Design System.png"
                       alt="Final Design System"
-                      className="wartekorbChallengeImage pageSevenDesignImage"
+                      className="wartekorbChallengeImage pageSevenDesignImage pageSevenDesignImage-final"
                     />
                   </button>
                 </div>
               </section>
 
-              <section className="page pageFourCaseStudy" aria-label="Wartekorb testing page" data-page-number="8">
+              <section
+                className="page pageFourCaseStudy pageEightPrototypePage"
+                aria-label="Wartekorb testing page"
+                data-page-number="8"
+              >
                 <div className="wartekorbChallengeCopy pageFourTextFlow">
-                  <h2 className="wartekorbChallengeTitle">Prototype &amp; Testing</h2>
+                  <h3 className="wartekorbChallengeSubheading">
+                    Information Architecture &amp; Structural Testing
+                  </h3>
                   <p className="wartekorbChallengeText">
-                    We prototyped the decision-pause flow and tested it with participants who
-                    regularly shopped online. The strongest feedback was that the pause felt helpful
-                    when it was framed as self-control, not as an obstacle.
+                    Before applying our visual design system, we translated our user stories into
+                    low-fidelity wireframes to validate screen layout hierarchy and navigation
+                    logic. Structuring the app in low fidelity allowed us to test the placement
+                    of intentional friction points without visual distraction.
                   </p>
+
+                  <h3 className="wartekorbChallengeSubheading">Key Interaction Loops</h3>
                   <p className="wartekorbChallengeText">
-                    The final concept balanced friction and delight: users were given a thoughtful
-                    checkpoint, quick budgeting feedback, and a feeling of agency before completing
-                    the purchase.
+                    We focused our structural explorations on three core functional modules:
+                  </p>
+
+                  <h3 className="wartekorbChallengeSubheading">Capture &amp; Delay</h3>
+                  <p className="wartekorbChallengeText">
+                    A quick workflow to add impulse items into a &ldquo;Wartekorb&rdquo; (waiting
+                    basket) rather than a direct checkout cart.
+                  </p>
+
+                  <h3 className="wartekorbChallengeSubheading">Intervention Prompt</h3>
+                  <p className="wartekorbChallengeText">
+                    Triggering timed reflection screens that present key decision questions after
+                    a designated cooling-off period.
+                  </p>
+
+                  <h3 className="wartekorbChallengeSubheading">Impact Dashboard</h3>
+                  <p className="wartekorbChallengeText">
+                    Layouts for visualizing money saved and environmental impact to provide
+                    positive reinforcement.
                   </p>
                 </div>
+
+                <button
+                  type="button"
+                  className="wartekorbImageButton pageEightPrototypeImageButton"
+                  onPointerDownCapture={stopBookFlipEvent}
+                  onMouseDownCapture={stopBookFlipEvent}
+                  onTouchStartCapture={stopBookFlipEvent}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    openLightbox("/assets/Low-Fidelity.png", "Low-fidelity prototypes");
+                  }}
+                  aria-label="Open larger low-fidelity prototypes image"
+                >
+                  <img
+                    src="/assets/Low-Fidelity.png"
+                    alt="Low-fidelity prototypes"
+                    className="wartekorbChallengeImage pageEightPrototypeImage"
+                  />
+                </button>
               </section>
 
               <section className="page" data-page-number="9">
