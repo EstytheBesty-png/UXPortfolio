@@ -124,8 +124,6 @@ body {
 .book {
   perspective: 1800px;
   transform-style: preserve-3d;
-  filter: drop-shadow(22px 8px 20px rgba(0, 0, 0, 0.26))
-           drop-shadow(18px 24px 34px rgba(0, 0, 0, 0.32));
   box-shadow: none;
   border-radius: 8px;
   transition: transform 0.3s ease, filter 0.3s ease;
@@ -137,8 +135,6 @@ body {
 
 .book:hover {
   transform: translateY(-5px);
-  filter: drop-shadow(28px 12px 26px rgba(0, 0, 0, 0.34))
-           drop-shadow(24px 28px 40px rgba(0, 0, 0, 0.4));
 }
 
 .sideTabs {
@@ -344,9 +340,8 @@ body {
 
 .moodTrackerPanel {
   display: flex;
-  flex: 1;
   flex-direction: column;
-  justify-content: center;
+  margin-top: auto;
   padding: 1rem 1rem 0.75rem;
   background: rgba(255, 255, 255, 0.44);
   border: 1px solid rgba(111, 86, 61, 0.18);
@@ -371,6 +366,11 @@ body {
 }
 
 .moodOption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  min-width: 0;
   border: 1px solid rgba(111, 86, 61, 0.25);
   border-radius: 12px;
   background: linear-gradient(135deg, #fffaf0 0%, #f4f0ff 100%);
@@ -381,6 +381,39 @@ body {
   padding: 0.7rem 0.55rem;
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.moodIcon {
+  flex: 0 0 auto;
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif;
+  font-size: 1.05em;
+}
+
+.moodOption[aria-pressed="true"] {
+  border-color: rgba(94, 127, 69, 0.75);
+  background: linear-gradient(135deg, #e4f5d9 0%, #fff4cf 100%);
+  box-shadow: 0 5px 14px rgba(94, 127, 69, 0.18);
+}
+
+.moodResult {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.25rem;
+  margin-top: 0.75rem;
+  padding: 0.45rem 0.7rem;
+  border-top: 1px dashed rgba(111, 86, 61, 0.3);
+  color: #5e7f45;
+  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+  font-size: 1.06rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.moodResultIcon {
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif;
+  font-size: 1.2em;
 }
 
 .moodOption:hover {
@@ -397,34 +430,58 @@ body {
 .aboutMeLayout {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
   align-items: stretch;
   flex: 1;
 }
 
 .aboutMeSection {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.6rem;
+  display: grid;
+  grid-template-columns: minmax(120px, 0.85fr) minmax(0, 1.15fr);
+  align-items: stretch;
+  gap: 1rem;
+  padding-right: 2.5rem;
 }
 
-.aboutMePhotoPlaceholder {
-  width: min(100%, 240px);
-  height: 200px;
+.aboutMePhotoFrame {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0.3rem auto 0.5rem;
-  border: 2px dashed rgba(118, 92, 146, 0.5);
+  margin: 0;
+  overflow: hidden;
   border-radius: 18px;
-  background: linear-gradient(135deg, #f9f4ff 0%, #f4f4f4 100%);
-  color: #6d6781;
-  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  text-align: center;
+  border: 2px solid rgba(118, 92, 146, 0.35);
+  box-shadow: 0 8px 18px rgba(64, 63, 92, 0.12);
+}
+
+.aboutMePhotoPlaceholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 36% center;
+  image-rendering: auto;
+  transform: scale(1.12);
+  transform-origin: 36% center;
+}
+
+.aboutMeIntroCopy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.44);
+  border: 1px solid rgba(111, 86, 61, 0.18);
+  border-radius: 18px;
+}
+
+.aboutMeIntroGreeting,
+.aboutMeIntroStatement {
+  display: block;
 }
 
 .page::after {
@@ -650,7 +707,39 @@ body {
   margin-bottom: 2.25rem;
 }
 
+.pageSevenDesignImages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  padding-right: 3.1rem;
+}
+
+.pageSevenDesignImageButton {
+  width: 100%;
+}
+
+.pageSevenDesignImage {
+  width: 100%;
+  height: clamp(90px, 22vh, 220px);
+  display: block;
+  object-fit: contain;
+}
+
+.pageSevenDesignImageButton:first-child .pageSevenDesignImage {
+  height: clamp(200px, 34vh, 360px);
+}
+
+.pageSevenDesignImageButton:last-child .pageSevenDesignImage {
+  height: clamp(120px, 24vh, 250px);
+}
+
 @media (max-width: 980px) {
+  .page {
+    padding: 1.35rem;
+    padding-bottom: 2.7rem;
+  }
+
   .wartekorbChallengeLayout {
     grid-template-columns: 1fr;
   }
@@ -718,6 +807,54 @@ body {
 
   .pageFourCaseStudy .pageFourImage-storyboard {
     margin-bottom: 0.8rem;
+  }
+
+  .pageSevenDesignImages {
+    padding-right: 0;
+  }
+
+  .pageSevenDesignImage {
+    height: clamp(70px, 14vh, 120px);
+  }
+
+  .pageSevenDesignImageButton:first-child .pageSevenDesignImage {
+    height: clamp(120px, 22vh, 190px);
+  }
+
+  .pageSevenDesignImageButton:last-child .pageSevenDesignImage {
+    height: clamp(80px, 15vh, 130px);
+  }
+}
+
+@media (max-width: 860px) {
+  .sideTabs {
+    top: 0.5rem;
+    right: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    width: min(100%, 620px);
+    gap: 0.3rem;
+  }
+
+  .sideTab {
+    width: auto;
+    min-width: 0;
+    padding: 0.3rem 0.55rem;
+    border-left: 1px solid rgba(122, 89, 55, 0.58);
+    border-radius: 8px;
+    font-size: 0.78rem;
+  }
+
+  .title {
+    max-width: calc(100vw - 1.5rem);
+    gap: 0.4rem;
+    padding-inline: 0.85rem;
+  }
+
+  .titleScript,
+  .titleSerif {
+    white-space: normal;
   }
 }
 
@@ -1264,15 +1401,58 @@ body {
 
 @media (max-width: 720px) {
   .sideTabs {
-    right: -38px;
+    right: 0;
     top: 0.5rem;
+    width: 100%;
+    justify-content: center;
   }
 
   .sideTab {
-    width: 90px;
+    width: auto;
     font-size: 0.78rem;
     padding: 0.28rem 0.56rem;
-    border-radius: 0 8px 8px 0;
+    border-radius: 8px;
+  }
+
+  .page {
+    padding: 1rem;
+    padding-bottom: 2.45rem;
+  }
+
+  .page::after {
+    left: 0.65rem;
+    right: 0.65rem;
+    font-size: 0.66rem;
+  }
+
+  .page[data-page-number]::before {
+    right: 0.65rem;
+    font-size: 0.72rem;
+  }
+
+  .moodTrackerGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .moodOption {
+    padding: 0.55rem;
+    font-size: 1rem;
+  }
+
+  .aboutMeSection {
+    grid-template-columns: 1fr;
+    padding-right: 0;
+  }
+
+  .aboutMePhotoFrame {
+    width: min(100%, 300px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    margin: 0 auto;
+  }
+
+  .moodTrackerPanel {
+    margin-top: 0;
   }
 
   .wkCase {

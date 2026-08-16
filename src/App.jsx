@@ -26,14 +26,30 @@ const TOC_ITEMS = [
   { label: "Contact", pageIndex: 13, pageNumber: 13 },
 ];
 
+const MOOD_OPTIONS = [
+  { label: "Happy", icon: "😊" },
+  { label: "Excited", icon: "🤩" },
+  { label: "Inspired", icon: "💡" },
+  { label: "Amused", icon: "😄" },
+  { label: "Content", icon: "😌" },
+  { label: "Tired", icon: "😴" },
+  { label: "Anxious", icon: "😰" },
+  { label: "Frustrated", icon: "😤" },
+  { label: "Stressed", icon: "😣" },
+  { label: "Overwhelmed", icon: "🌊" },
+  { label: "Sad", icon: "😢" },
+];
+
 function App() {
   const bookRef = useRef();
+  const frontCoverRef = useRef(null);
   const lightboxCloseButtonRef = useRef(null);
   const lastFocusedElementRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [hasOpenedNotebook, setHasOpenedNotebook] = useState(false);
   const [closeOnNextClick, setCloseOnNextClick] = useState(false);
   const [lightboxImage, setLightboxImage] = useState(null);
+  const [selectedMood, setSelectedMood] = useState(null);
   const [viewport, setViewport] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -70,6 +86,29 @@ function App() {
     lastFocusedElementRef.current?.focus?.();
   }, [lightboxImage]);
 
+  useEffect(() => {
+    const cover = frontCoverRef.current;
+    if (!cover) {
+      return;
+    }
+
+    const stopCoverGesture = (event) => {
+      event.stopPropagation();
+    };
+    const captureOptions = { capture: true };
+    const gestureEvents = ["pointerdown", "mousedown", "touchstart"];
+
+    gestureEvents.forEach((eventName) => {
+      cover.addEventListener(eventName, stopCoverGesture, captureOptions);
+    });
+
+    return () => {
+      gestureEvents.forEach((eventName) => {
+        cover.removeEventListener(eventName, stopCoverGesture, captureOptions);
+      });
+    };
+  }, []);
+
   const handleFlip = (e) => {
     const pageIndex = e.data;
     const pageFlip = bookRef.current?.pageFlip();
@@ -96,6 +135,18 @@ function App() {
     setCloseOnNextClick(false);
   };
 
+  const handleCoverClick = (event) => {
+    event.stopPropagation();
+    const pageFlip = bookRef.current?.pageFlip();
+    if (!pageFlip) {
+      return;
+    }
+    pageFlip.turnToPage(1);
+    setHasOpenedNotebook(true);
+    setIsOpen(true);
+    setCloseOnNextClick(false);
+  };
+
   const handleTabJump = (pageIndex) => {
     const pageFlip = bookRef.current?.pageFlip();
     if (!pageFlip) {
@@ -117,17 +168,49 @@ function App() {
     event.stopPropagation();
   };
 
+  const handleBookPointerDown = (event) => {
+    const interactiveTarget = event.target.closest?.("button, a, input, textarea, select");
+    const frontCover = event.target.closest?.('[aria-label="Journal cover"]');
+    if (interactiveTarget || frontCover) {
+      return;
+    }
+
+    const touchPoint = event.touches?.[0] || event.changedTouches?.[0];
+    const clientX = touchPoint?.clientX ?? event.clientX;
+    const clientY = touchPoint?.clientY ?? event.clientY;
+    if (clientX === undefined || clientY === undefined) {
+      return;
+    }
+
+    const bookFrameBounds = event.currentTarget.getBoundingClientRect();
+    const pointerX = clientX - bookFrameBounds.left;
+    const pointerY = clientY - bookFrameBounds.top;
+    const cornerSize = 120;
+    const isLeftEdge = pointerX <= 56;
+    const isRightEdge = pointerX >= bookFrameBounds.width - 56;
+    const isTopCorner =
+      pointerY <= cornerSize && (pointerX <= cornerSize || pointerX >= bookFrameBounds.width - cornerSize);
+    const isBottomCorner =
+      pointerY >= bookFrameBounds.height - cornerSize &&
+      (pointerX <= cornerSize || pointerX >= bookFrameBounds.width - cornerSize);
+
+    if (!isLeftEdge && !isRightEdge && !isTopCorner && !isBottomCorner) {
+      event.stopPropagation();
+    }
+  };
+
   const closeLightbox = () => {
     setLightboxImage(null);
   };
 
   const availableWidth = Math.max(320, viewport.width - VIEWPORT_SIDE_GAP);
   const availableHeight = Math.max(320, viewport.height - VIEWPORT_TOP_BOTTOM_GAP);
+  const availablePageWidth = isOpen ? availableWidth / 2 : availableWidth;
 
-  const widthLimitedHeight = availableWidth / BOOK_RATIO;
+  const widthLimitedHeight = availablePageWidth / BOOK_RATIO;
   const fitByWidth = widthLimitedHeight <= availableHeight;
 
-  const fittedWidth = Math.floor(fitByWidth ? availableWidth : availableHeight * BOOK_RATIO);
+  const fittedWidth = Math.floor(fitByWidth ? availablePageWidth : availableHeight * BOOK_RATIO);
   const fittedHeight = Math.floor(fitByWidth ? widthLimitedHeight : availableHeight);
 
   const bookWidth = fittedWidth;
@@ -145,6 +228,9 @@ function App() {
           <div
             className="bookFrame"
             style={{ width: `${bookFrameWidth}px`, height: `${bookHeight}px` }}
+            onPointerDownCapture={handleBookPointerDown}
+            onMouseDownCapture={handleBookPointerDown}
+            onTouchStartCapture={handleBookPointerDown}
           >
             <HTMLFlipBook
               ref={bookRef}
@@ -166,7 +252,12 @@ function App() {
               className="book"
               onFlip={handleFlip}
             >
-              <section className="page cover" aria-label="Journal cover">
+              <section
+                ref={frontCoverRef}
+                className="page cover"
+                aria-label="Journal cover"
+                onClick={handleCoverClick}
+              >
                 <img
                   src="/assets/notebook cover brunch newspaper.jpeg"
                   alt="Journal cover"
@@ -193,37 +284,67 @@ function App() {
               </section>
 
               <section className="page aboutMePage" data-page-number="2">
-                <h2>Introduction</h2>
+                <h2>Intro</h2>
                 <div className="aboutMeLayout">
                   <div className="aboutMeSection">
-                    <div className="aboutMePhotoPlaceholder" aria-label="Profile photo placeholder">
-                      Photo Placeholder
+                    <div className="aboutMePhotoFrame">
+                      <img
+                        src="/assets/estk_photo_display.jpg"
+                        alt="Estelle Kohler"
+                        className="aboutMePhotoPlaceholder"
+                      />
                     </div>
 
-                    <p>
-                      Hi, I&apos;m Estelle — a UX designer focused on creating meaningful,
-                      human-centered experiences that blend clarity, emotion, and function.
-                    </p>
-                    <p>
-                      My work is guided by curiosity, research, and a love for turning complex
-                      ideas into intuitive interactions. I enjoy exploring how thoughtful design
-                      can make digital products feel more useful, accessible, and memorable.
-                    </p>
+                    <div className="aboutMeIntroCopy">
+                      <p>
+                        <span className="aboutMeIntroGreeting">Hi, I&apos;m Estelle</span>
+                        <span className="aboutMeIntroStatement">
+                          A UX Designer creating human-centred experiences for whatever comes next.
+                        </span>
+                      </p>
+                      <p>
+                        My background in event management and IT support taught me how to untangle
+                        complex logistics and anticipate people&apos;s needs. Today, I translate that
+                        practical empathy into my design process. Whether I am mapping out a
+                        customer journey, prototyping a wearable interface, or exploring new
+                        digital tools, I want to build adaptable products that thrive beyond
+                        traditional screens.
+                      </p>
+                    </div>
                   </div>
 
                   <div className="moodTrackerPanel">
                     <h3>Mood Tracker</h3>
                     <p>How are you feeling today?</p>
                     <div className="moodTrackerGrid" aria-label="Mood tracker options">
-                      <button type="button" className="moodOption">
-                        🌸 Happy
-                      </button>
-                      <button type="button" className="moodOption">
-                        🌿 Calm
-                      </button>
-                      <button type="button" className="moodOption">
-                        🍓 Inspired
-                      </button>
+                      {MOOD_OPTIONS.map((mood) => (
+                        <button
+                          type="button"
+                          className="moodOption"
+                          key={mood.label}
+                          onPointerDownCapture={stopBookFlipEvent}
+                          onMouseDownCapture={stopBookFlipEvent}
+                          onTouchStartCapture={stopBookFlipEvent}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            setSelectedMood(mood);
+                          }}
+                          aria-pressed={selectedMood?.label === mood.label}
+                        >
+                          <span className="moodIcon" aria-hidden="true">{mood.icon}</span>
+                          <span>{mood.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                    <div className="moodResult" aria-live="polite">
+                      {selectedMood ? (
+                        <>
+                          <span className="moodResultIcon" aria-hidden="true">{selectedMood.icon}</span>
+                          <span>You are feeling {selectedMood.label.toLowerCase()}.</span>
+                        </>
+                      ) : (
+                        <span>Select a mood to check in.</span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -563,19 +684,72 @@ function App() {
                 </div>
               </section>
 
-              <section className="page pageFourCaseStudy" aria-label="Wartekorb concept page" data-page-number="7">
+              <section
+                className="page pageFourCaseStudy pageSevenDesignPage"
+                aria-label="Wartekorb concept page"
+                data-page-number="7"
+              >
                 <div className="wartekorbChallengeCopy pageFourTextFlow">
-                  <h2 className="wartekorbChallengeTitle">Concept Development</h2>
+                  <h3 className="wartekorbChallengeSubheading">
+                    The Design System: Form Meets Function
+                  </h3>
                   <p className="wartekorbChallengeText">
-                    We translated research insights into a design concept that introduces a brief
-                    reflective moment before checkout. This pause encourages users to reconsider
-                    their emotional urgency and gives them a clearer view of the trade-offs.
+                    To ensure this vibrant direction remained highly usable, we established a
+                    strict design system to control the chaos.
                   </p>
+
+                  <h3 className="wartekorbChallengeSubheading">Functional Color</h3>
                   <p className="wartekorbChallengeText">
-                    The design language focused on clarity, warmth, and supportive prompts rather
-                    than guilt or restriction. The experience was meant to feel intentional,
-                    calm, and empowering rather than punitive.
+                    We utilized Neon Green exclusively for primary actions and positive
+                    reinforcement, while grounding the main interface in deep Violet.
                   </p>
+
+                  <h3 className="wartekorbChallengeSubheading">Typography</h3>
+                  <p className="wartekorbChallengeText">
+                    We separated brand expression from usability by using an expressive display
+                    font for large headers and logos, paired with a highly legible sans-serif
+                    (Plus Jakarta Sans) for all UI components and navigation.
+                  </p>
+                </div>
+
+                <div className="pageSevenDesignImages" aria-label="Design system visuals">
+                  <button
+                    type="button"
+                    className="wartekorbImageButton pageSevenDesignImageButton"
+                    onPointerDownCapture={stopBookFlipEvent}
+                    onMouseDownCapture={stopBookFlipEvent}
+                    onTouchStartCapture={stopBookFlipEvent}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      openLightbox("/assets/Visuelle Leitidee.png", "Visuelle Leitidee");
+                    }}
+                    aria-label="Open larger Visuelle Leitidee image"
+                  >
+                    <img
+                      src="/assets/Visuelle Leitidee.png"
+                      alt="Visuelle Leitidee"
+                      className="wartekorbChallengeImage pageSevenDesignImage"
+                    />
+                  </button>
+
+                  <button
+                    type="button"
+                    className="wartekorbImageButton pageSevenDesignImageButton"
+                    onPointerDownCapture={stopBookFlipEvent}
+                    onMouseDownCapture={stopBookFlipEvent}
+                    onTouchStartCapture={stopBookFlipEvent}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      openLightbox("/assets/Final Design System.png", "Final Design System");
+                    }}
+                    aria-label="Open larger Final Design System image"
+                  >
+                    <img
+                      src="/assets/Final Design System.png"
+                      alt="Final Design System"
+                      className="wartekorbChallengeImage pageSevenDesignImage"
+                    />
+                  </button>
                 </div>
               </section>
 
