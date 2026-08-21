@@ -8,7 +8,8 @@ html,
 body,
 #root {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -21,14 +22,15 @@ body {
 
 .scene {
   width: 100%;
-  min-height: 100dvh;
+  height: 100dvh;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0;
   padding: 0;
-  background: #eef8df;
+  background: #dfe7d4;
   overflow: hidden;
 }
 
@@ -39,7 +41,9 @@ body {
   align-items: center;
   gap: 0;
   width: 100%;
-  min-height: 100dvh;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .book-container.closed {
@@ -49,15 +53,25 @@ body {
 .book-container.open {
   justify-content: center;
 }
-
+ 
 .bookShell {
   display: flex;
   position: relative;
   width: 100%;
-  height: 100dvh;
+  height: 100%;
+  min-height: 0;
   justify-content: center;
   align-items: center;
   flex: 1;
+}
+
+@media (max-width: 860px) {
+  .bookShell {
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+  }
 }
 
 .bookFrame {
@@ -70,12 +84,12 @@ body {
 
 .startPrompt {
   position: absolute;
-  left: clamp(2.5rem, 5vw, 5rem);
+  left: 18%;
   top: 50%;
   z-index: 5;
   display: flex;
-  width: min(38%, 380px);
-  transform: translateY(-50%);
+  width: min(34%, 320px);
+  transform: translate(-50%, -50%);
   flex-direction: column;
   align-items: center;
   gap: 0.3rem;
@@ -251,7 +265,7 @@ body {
     linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(252, 247, 235, 0.98) 100%);
   border: 1px solid rgba(135, 111, 79, 0.55);
   padding: 2rem;
-  padding-bottom: 3.1rem;
+  padding-bottom: 3.6rem;
   overflow-x: hidden;
   overflow-y: auto;
   box-shadow:
@@ -267,7 +281,6 @@ body {
 .page > * {
   margin: 0;
 }
-
 .page > * + * {
   margin-top: 0.8rem;
 }
@@ -467,7 +480,7 @@ body {
 .aboutMeLayout {
   display: flex;
   flex-direction: column;
-  gap: 3.5rem;
+  gap: 1.25rem;
   align-items: stretch;
   flex: 1;
 }
@@ -483,7 +496,7 @@ body {
 .aboutMePhotoFrame {
   width: 100%;
   height: 100%;
-  min-height: 220px;
+  min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -510,7 +523,7 @@ body {
   flex-direction: column;
   justify-content: center;
   gap: 0.6rem;
-  padding: 1rem;
+  padding: 0.8rem;
   background: rgba(255, 255, 255, 0.44);
   border: 1px solid rgba(111, 86, 61, 0.18);
   border-radius: 18px;
@@ -521,11 +534,175 @@ body {
   display: block;
 }
 
+@media (max-height: 1200px) and (min-width: 861px) {
+  .page {
+    padding: 1rem;
+    padding-bottom: 2.25rem;
+    overflow-y: hidden;
+  }
+
+  .page > * + * {
+    margin-top: 0.45rem;
+  }
+
+  .page h2,
+  .wartekorbChallengeTitle {
+    font-size: 1.5rem;
+  }
+
+  .page h3,
+  .wartekorbChallengeSubheading {
+    font-size: 1.08rem;
+  }
+
+  .page p,
+  .page li,
+  .wartekorbChallengeText {
+    font-size: 0.88rem;
+    line-height: 1.32;
+  }
+
+  .tocPage h2 {
+    margin-bottom: 0.8rem;
+  }
+
+  .tocList {
+    min-height: 0;
+    gap: 0.35rem;
+    padding-top: 0;
+  }
+
+  .tocLink {
+    font-size: 1.18rem;
+  }
+
+  .tocList li {
+    font-size: 0.95rem;
+  }
+
+  .wartekorbChallengePage {
+    padding-top: 1rem;
+  }
+
+  .wartekorbChallengeLayout,
+  .wartekorbChallengeCopy {
+    gap: 0.45rem;
+  }
+
+  .wartekorbChallengeMedia {
+    gap: 0.75rem;
+  }
+
+  .wartekorbChallengeImage {
+    max-height: 30vh;
+    object-fit: contain;
+  }
+
+.pageFourCaseStudy .wartekorbChallengeTitle { font-size: 1.5rem; line-height: 1.12; }
+.pageFourCaseStudy .wartekorbChallengeSubheading { font-size: 1.08rem; line-height: 1.18; }
+.pageFourCaseStudy .wartekorbChallengeText { font-size: 0.88rem; line-height: 1.32; }  
+
+  .pageFourCaseStudy .pageFourImageGrid {
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .pageFourCaseStudy .pageFourImage-small,
+  .pageFourCaseStudy .pageFourImage-large,
+  .pageFourCaseStudy .pageFourImage-storyboard {
+    max-height: 32vh;
+    object-fit: contain;
+  }
+
+  .pageSevenDesignImages {
+    gap: 0.45rem;
+    margin-top: 0.5rem;
+  }
+
+  .pageSevenDesignTopRow .pageSevenDesignImage {
+    height: 25vh;
+  }
+
+  .pageSevenDesignImageButton-final .pageSevenDesignImage {
+    height: 17vh;
+  }
+
+  .pageEightPrototypeImageButton {
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .pageEightPrototypeImage {
+    max-height: 52vh;
+  }
+
+  .aboutMePage {
+    gap: 0.55rem;
+    overflow: hidden;
+  }
+
+  .aboutMeLayout {
+    flex: 0 0 auto;
+    gap: 0.7rem;
+  }
+
+  .aboutMeSection {
+    grid-template-columns: minmax(100px, 0.7fr) minmax(0, 1.3fr);
+    gap: 0.75rem;
+    height: 300px;
+    padding-right: 0;
+  }
+
+  .aboutMePhotoFrame {
+    height: 300px;
+  }
+
+  .aboutMeIntroCopy {
+    padding: 0.6rem;
+  }
+
+  .aboutMeIntroCopy p {
+    font-size: 0.75rem;
+    line-height: 1.35;
+  }
+
+  .moodTrackerPanel {
+    flex: 0 0 auto;
+    padding: 0.7rem 0.7rem 0.5rem;
+  }
+
+  .moodTrackerPanel h3 {
+    font-size: 1.15rem;
+  }
+
+  .moodTrackerPanel p {
+    margin-bottom: 0.45rem;
+    font-size: 0.78rem;
+  }
+
+  .moodTrackerGrid {
+    gap: 0.35rem;
+  }
+
+  .moodOption {
+    min-height: 2rem;
+    padding: 0.25rem 0.35rem;
+    font-size: 0.78rem;
+  }
+
+  .moodResult {
+    min-height: 1.65rem;
+    margin-top: 0.45rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.78rem;
+  }
+}
+
 .page::after {
   content: "\00A9 2026 Estelle K\00F6hler. All rights reserved.";
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 1rem;
+  right: 3rem;
   bottom: 0.85rem;
   text-align: center;
   font-size: 0.76rem;
@@ -547,22 +724,24 @@ body {
 
 .wartekorbChallengePage {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: flex-start;
   padding-top: 1.8rem;
 }
 
 .wartekorbChallengeLayout {
   width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(220px, 42%);
   gap: 1.6rem;
-  align-items: center;
+  align-items: stretch;
 }
 
 .wartekorbChallengeCopy {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 0.8rem;
 }
 
@@ -595,7 +774,7 @@ body {
   gap: 2rem;
   align-items: flex-end;
   justify-content: center;
-  align-self: center;
+  align-self: stretch;
   padding-top: 0;
 }
 
@@ -842,6 +1021,8 @@ body {
 
   .wartekorbChallengeImage {
     width: min(82%, 320px);
+    max-height: 26vh;
+    object-fit: contain;
     justify-self: center;
   }
 
@@ -1475,6 +1656,27 @@ body {
   -webkit-backface-visibility: hidden;
 }
 
+.coverTitle {
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  z-index: 1;
+  display: flex;
+  width: 52%;
+  transform: translate(-50%, -50%);
+  flex-direction: column;
+  gap: 0.08em;
+  color: #4c3928;
+  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+  font-size: clamp(1.15rem, 3vw, 2.7rem);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 0.82;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+  pointer-events: none;
+}
+
 @media (max-width: 980px) {
   .sideTabs {
     right: -48px;
@@ -1498,8 +1700,8 @@ body {
 @media (max-width: 720px) {
   .startPrompt {
     position: fixed;
-    left: 0.5rem;
-    width: 40vw;
+    left: 18vw;
+    width: 34vw;
   }
 
   .startPromptTitle {

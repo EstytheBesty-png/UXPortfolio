@@ -200,7 +200,13 @@ function App() {
 
   const availableWidth = Math.max(320, viewport.width - VIEWPORT_SIDE_GAP);
   const availableHeight = Math.max(320, viewport.height - VIEWPORT_TOP_BOTTOM_GAP);
-  const availablePageWidth = isOpen ? availableWidth / 2 : availableWidth;
+  const usePortrait = viewport.width <= 860;
+  const portraitHeightWidth = Math.floor(availableHeight * BOOK_RATIO);
+  const availablePageWidth = usePortrait
+    ? Math.max(availableWidth, portraitHeightWidth)
+    : isOpen
+      ? availableWidth / 2
+      : availableWidth;
 
   const widthLimitedHeight = availablePageWidth / BOOK_RATIO;
   const fitByWidth = widthLimitedHeight <= availableHeight;
@@ -210,7 +216,7 @@ function App() {
 
   const bookWidth = fittedWidth;
   const bookHeight = fittedHeight;
-  const bookFrameWidth = bookWidth * 2;
+  const bookFrameWidth = usePortrait || !isOpen ? bookWidth : bookWidth * 2;
   const bookMinWidth = Math.floor(fittedWidth * 0.72);
   const bookMaxWidth = fittedWidth;
   const bookMinHeight = Math.floor(fittedHeight * 0.72);
@@ -237,10 +243,11 @@ function App() {
 
             <HTMLFlipBook
               ref={bookRef}
+              key={usePortrait ? "portrait" : "landscape"}
               width={bookWidth}
               height={bookHeight}
               size="fixed"
-              usePortrait={false}
+              usePortrait={usePortrait}
               minWidth={bookMinWidth}
               maxWidth={bookMaxWidth}
               minHeight={bookMinHeight}
@@ -260,10 +267,14 @@ function App() {
                 aria-label="Journal cover"
               >
                 <img
-                  src="/assets/notebook cover brunch newspaper.jpeg"
+                  src="/assets/Cover page 2.0.jpeg"
                   alt="Journal cover"
                   className="coverImage"
                 />
+                <div className="coverTitle" aria-label="Estelle's UX Portfolio">
+                  <span>Estelle&apos;s UX</span>
+                  <span>Portfolio</span>
+                </div>
               </section>
 
               <section className="page tocPage" data-page-number="1">
@@ -876,7 +887,7 @@ function App() {
 
               <section className="page cover" aria-label="Journal back cover">
                 <img
-                  src="/assets/notebook back.jpeg"
+                  src="/assets/Back Cover 2.0.jpeg"
                   alt="Journal back cover"
                   className="coverImage"
                 />
