@@ -96,6 +96,12 @@ body {
   color: #6d4a2f;
   text-align: center;
   pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+.startPrompt-hidden {
+  opacity: 0;
 }
 
 .startPromptTitle {
@@ -285,6 +291,18 @@ body {
   margin-top: 0.8rem;
 }
 
+.page[data-tone="sage"] { --tone-accent: #5e7f45; }
+.page[data-tone="rose"] { --tone-accent: #c9677c; }
+.page[data-tone="sky"] { --tone-accent: #2f7fb0; }
+.page[data-tone="mint"] { --tone-accent: #2f9c78; }
+.page[data-tone="peach"] { --tone-accent: #c97a3f; }
+.page[data-tone="lilac"] { --tone-accent: #7a5fc9; }
+.page[data-tone="sun"] { --tone-accent: #b8860b; }
+
+.page[data-tone] {
+  border-top: 4px solid var(--tone-accent);
+}
+
 .page h2,
 .wartekorbChallengeTitle {
   color: #2f3561;
@@ -294,13 +312,18 @@ body {
   text-align: left;
   margin: 0;
   font-weight: 700;
+  padding-left: 0.65rem;
+  border-left: 4px solid var(--tone-accent, rgba(47, 53, 97, 0.35));
 }
 
 .page h3 {
-  color: #2f3561;
+  color: var(--tone-accent, #6d4a2f);
   font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-  font-size: clamp(1.24rem, 1.5vw, 1.52rem);
-  line-height: 1.2;
+  font-size: clamp(0.92rem, 1.05vw, 1.05rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.3;
   text-align: left;
 }
 
@@ -599,7 +622,7 @@ body {
   }
 
 .pageFourCaseStudy .wartekorbChallengeTitle { font-size: 1.5rem; line-height: 1.12; }
-.pageFourCaseStudy .wartekorbChallengeSubheading { font-size: 1.08rem; line-height: 1.18; }
+.pageFourCaseStudy .wartekorbChallengeSubheading { font-size: 0.86rem; line-height: 1.3; }
 .pageFourCaseStudy .wartekorbChallengeText { font-size: 0.88rem; line-height: 1.32; }  
 
   .pageFourCaseStudy .pageFourImageGrid {
@@ -741,7 +764,7 @@ body {
 .wartekorbChallengeCopy {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.8rem;
 }
 
@@ -761,11 +784,47 @@ body {
 
 .wartekorbChallengeSubheading {
   margin: 0.4rem 0 0;
-  color: #2f3561;
+  color: var(--tone-accent, #6d4a2f);
   font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-  font-size: clamp(1.24rem, 1.5vw, 1.52rem);
-  line-height: 1.2;
+  font-size: clamp(0.92rem, 1.05vw, 1.05rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.3;
   text-align: left;
+}
+
+.sectionKicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.sectionKickerLabel {
+  color: var(--tone-accent, #6d4a2f);
+}
+
+.sectionKickerPart {
+  color: rgba(47, 41, 34, 0.55);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.sectionEndNote {
+  margin-top: 1.2rem;
+  padding-top: 0.8rem;
+  border-top: 1px dashed rgba(111, 86, 61, 0.35);
+  color: rgba(47, 41, 34, 0.6);
+  font-size: 0.85rem;
+  font-style: italic;
+  text-align: center;
 }
 
 .wartekorbChallengeMedia {
@@ -776,6 +835,12 @@ body {
   justify-content: center;
   align-self: stretch;
   padding-top: 0;
+}
+
+.wartekorbTeamNote {
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-top: 0.5rem;
 }
 
 .wartekorbImageButton {
@@ -870,8 +935,8 @@ body {
 
 .pageFourCaseStudy .wartekorbChallengeSubheading {
   margin-top: 0.18rem;
-  font-size: clamp(1.18rem, 1.46vw, 1.42rem);
-  line-height: 1.18;
+  font-size: clamp(0.88rem, 1vw, 1rem);
+  line-height: 1.3;
 }
 
 .pageFourCaseStudy .wartekorbChallengeText {
@@ -1061,7 +1126,7 @@ body {
   }
 
   .pageFourCaseStudy .wartekorbChallengeSubheading {
-    font-size: clamp(1.1rem, 3.45vw, 1.3rem);
+    font-size: clamp(0.82rem, 2.6vw, 0.96rem);
   }
 
   .pageFourCaseStudy .wartekorbChallengeText {
@@ -1192,459 +1257,18 @@ body {
   background: #fff;
 }
 
-.wkCase {
-  --wk-base: #f6f6f6;
-  --wk-primary: #7f68ff;
-  --wk-secondary: #ceff05;
-  --wk-accent: #f23ce6;
-  --wk-accent2: #4047fe;
-  --wk-ink: #26223d;
-  position: relative;
-  margin-top: 0.6rem;
-  min-height: 620px;
-  border: 1px solid rgba(185, 165, 124, 0.55);
-  background: linear-gradient(180deg, #fbf8ef 0%, #f8f2e7 100%);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.65);
-  overflow: hidden;
-}
-
-.wkStage {
-  position: relative;
-  min-height: 620px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 1.2rem 0.8rem 0;
-  transition: opacity 0.25s ease;
-}
-
-.wkStage-hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.wkLogoRow {
-  position: relative;
-  margin-top: 0.35rem;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 94px;
-}
-
-.wkTitleImage {
-  width: min(92%, 520px);
-  height: auto;
-  display: block;
-}
-
-.wkHint {
-  margin: 0;
-  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-  font-size: clamp(2rem, 5.2vw, 2.85rem);
-  font-weight: 700;
-  line-height: 1.02;
-  letter-spacing: 0;
-  color: var(--wk-primary);
-  text-shadow: 0 2px 0 rgba(64, 71, 254, 0.18);
-}
-
-.wkConfettiRow {
-  position: absolute;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1.1rem;
-}
-
-.wkConfettiRow-top {
-  top: 114px;
-}
-
-.wkConfettiRow-mid {
-  top: 485px;
-  left: 32%;
-  right: 32%;
-  gap: 0.35rem;
-}
-
-.wkDot {
-  display: inline-block;
-  border-radius: 999px;
-  flex: 0 0 auto;
-}
-
-.wkDot-blue {
-  width: 18px;
-  height: 18px;
-  background: var(--wk-accent2);
-}
-
-.wkDot-lime {
-  width: 22px;
-  height: 22px;
-  background: var(--wk-secondary);
-}
-
-.wkDot-pink {
-  width: 20px;
-  height: 20px;
-  background: var(--wk-accent);
-}
-
-.wkDot-blueSmall {
-  width: 10px;
-  height: 10px;
-  background: #7f68ff;
-}
-
-.wkDot-limeSmall {
-  width: 12px;
-  height: 12px;
-  background: var(--wk-secondary);
-}
-
-.wkDot-pinkSmall {
-  width: 11px;
-  height: 11px;
-  background: var(--wk-accent);
-}
-
-.wkPullFrame {
-  position: relative;
-  margin-top: 150px;
-  width: min(78%, 322px);
-  min-height: 350px;
-  border: 2px solid rgba(127, 104, 255, 0.78);
-  background: rgba(255, 255, 255, 0.36);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 1.1rem;
-}
-
-.wkArrow {
-  width: 0;
-  height: 0;
-  margin-top: 0.35rem;
-  border-left: 16px solid transparent;
-  border-right: 16px solid transparent;
-  border-bottom: 22px solid var(--wk-primary);
-}
-
-.wkCenterIllustration {
-  position: relative;
-  width: 185px;
-  margin-top: 0.65rem;
-  padding-top: 22px;
-}
-
-.wkHandle {
-  position: absolute;
-  top: -8px;
-  width: 58px;
-  height: 24px;
-  border-top: 5px solid #ceff05;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-radius: 22px 22px 0 0;
-  z-index: 3;
-}
-
-.wkHandle-left {
-  left: 18px;
-  transform: rotate(-12deg);
-}
-
-.wkHandle-right {
-  right: 18px;
-  transform: rotate(12deg);
-}
-
-.wkBasketBody {
-  position: relative;
-  width: 100%;
-  min-height: 84px;
-  border-radius: 10px 10px 20px 20px;
-  background: var(--wk-secondary);
-  border: 2px solid rgba(127, 104, 255, 0.25);
-  box-shadow:
-    0 7px 10px rgba(64, 71, 254, 0.15),
-    inset 0 -8px 11px rgba(127, 104, 255, 0.12);
-}
-
-.wkBasketBody::before,
-.wkBasketBody::after {
-  content: "";
-  position: absolute;
-  top: 12px;
-  width: 8px;
-  height: 24px;
-  border: 2px solid #ffffff;
-  border-top: 0;
-  border-radius: 0 0 8px 8px;
-  opacity: 0.95;
-}
-
-.wkBasketBody::before {
-  left: 52px;
-}
-
-.wkBasketBody::after {
-  right: 52px;
-}
-
-.wkPaperPull {
-  position: relative;
-  width: 120px;
-  margin: 0 auto -10px;
-  z-index: 5;
-  transition: transform 0.18s ease-out;
-}
-
-.wkPaperPull-active {
-  transition: none;
-}
-
-.wkPullTag {
-  width: 100%;
-  border: 2px solid rgba(127, 104, 255, 0.45);
-  border-bottom: 0;
-  border-radius: 8px 8px 0 0;
-  padding: 0.18rem 0.3rem;
-  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: #5f57c9;
-  background: #fffefb;
-  cursor: ns-resize;
-  touch-action: none;
-}
-
-.wkPaperLines {
-  position: relative;
-  min-height: 105px;
-  border: 2px solid rgba(127, 104, 255, 0.45);
-  border-top: 0;
-  background:
-    linear-gradient(90deg, rgba(242, 60, 230, 0.55) 0 1px, transparent 1px),
-    repeating-linear-gradient(
-      180deg,
-      rgba(64, 71, 254, 0.22) 0,
-      rgba(64, 71, 254, 0.22) 1px,
-      rgba(255, 255, 255, 0.95) 1px,
-      rgba(255, 255, 255, 0.95) 13px
-    );
-}
-
-.wkPaperLines::before {
-  content: "";
-  position: absolute;
-  left: 8px;
-  right: 8px;
-  top: -10px;
-  height: 10px;
-  background: repeating-radial-gradient(circle at 5px 10px, #594f45 0 1px, transparent 1px 6px);
-}
-
-.wkBaseBar {
-  width: 100%;
-  height: 52px;
-  margin-top: -4px;
-  border-radius: 8px;
-  background: var(--wk-accent);
-}
-
-.wkCasePaper {
-  position: absolute;
-  left: 10px;
-  right: 10px;
-  top: 8px;
-  bottom: 8px;
-  z-index: 6;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(248, 244, 237, 0.98)),
-    repeating-linear-gradient(
-      180deg,
-      rgba(64, 71, 254, 0.07) 0,
-      rgba(64, 71, 254, 0.07) 1px,
-      rgba(255, 255, 255, 0) 1px,
-      rgba(255, 255, 255, 0) 31px
-    );
-  border: 3px solid rgba(127, 104, 255, 0.75);
-  box-shadow: 0 22px 34px rgba(39, 39, 53, 0.34);
-  transform: translateY(104%);
-  transition: transform 0.35s ease;
-  overflow-y: auto;
-  padding: 1.1rem 1.2rem 1.3rem;
-}
-
-.wkCasePaper-open {
-  transform: translateY(0%);
-}
-
-.wkPaperTopBar {
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin: -0.2rem -0.2rem 0.8rem;
-  padding: 0.6rem 0.8rem;
-  background: linear-gradient(90deg, var(--wk-primary), var(--wk-accent2));
-  color: #ffffff;
-}
-
-.wkPaperTopBar p {
-  margin: 0;
-  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-  font-size: 1.22rem;
-  font-weight: 700;
-}
-
-.wkClosePaper {
-  border: 0;
-  border-radius: 999px;
-  padding: 0.4rem 0.85rem;
-  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #2f2d3a;
-  background: var(--wk-secondary);
-  cursor: pointer;
-}
-
-.wkCasePaper h3 {
-  margin-bottom: 0.35rem;
-  color: var(--wk-primary);
-  font-family: "Cormorant Garamond", Garamond, Georgia, serif;
-  font-size: 1.35rem;
-}
-
-.wkCasePaper p,
-.wkCasePaper li {
-  color: #2a2940;
-  font-size: 1rem;
-  line-height: 1.58;
-}
-
-.wkCasePaper ul {
-  margin-top: 0.5rem;
-  padding-left: 1.2rem;
-}
-
-.wkSticker {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  clip-path: polygon(
-    50% 0%,
-    62% 35%,
-    100% 50%,
-    62% 65%,
-    50% 100%,
-    38% 65%,
-    0% 50%,
-    38% 35%
-  );
-}
-
-.wkSticker-limeBurst {
-  transform: scale(1.25);
-  background: var(--wk-secondary);
-}
-
-.wkSticker-blueStar {
-  background: var(--wk-accent2);
-}
-
-.wkSticker-pinkSpark {
-  background: var(--wk-accent);
-}
-
-.wkSticker-limeSpark {
-  width: 16px;
-  height: 16px;
-  background: var(--wk-secondary);
-}
-
-.wkBottomRibbon {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-.wkBottomStar {
-  width: 45px;
-  height: 45px;
-  clip-path: polygon(50% 0%, 61% 36%, 100% 50%, 61% 64%, 50% 100%, 39% 64%, 0% 50%, 39% 36%);
-}
-
-.wkBottomStar-pink {
-  background: var(--wk-accent);
-}
-
-.wkBadge {
-  width: 80px;
-  height: 62px;
-  background: var(--wk-primary);
-  clip-path: polygon(
-    50% 0%,
-    72% 6%,
-    100% 28%,
-    92% 56%,
-    70% 100%,
-    30% 100%,
-    8% 56%,
-    0% 28%,
-    28% 6%
-  );
-  display: grid;
-  place-items: center;
-}
-
-.wkBadgeBasket {
-  position: relative;
-  width: 38px;
-  height: 24px;
-  border-radius: 5px 5px 9px 9px;
-  background: var(--wk-secondary);
-}
-
-.wkBadgeBasket::before,
-.wkBadgeBasket::after {
-  content: "";
-  position: absolute;
-  top: -11px;
-  width: 13px;
-  height: 10px;
-  border-top: 3px solid var(--wk-secondary);
-  border-radius: 8px 8px 0 0;
-}
-
-.wkBadgeBasket::before {
-  left: 3px;
-  transform: rotate(-12deg);
-}
-
-.wkBadgeBasket::after {
-  right: 3px;
-  transform: rotate(12deg);
-}
-
 .cover {
   padding: 0;
   background: #afd9cc;
+}
+
+.cover[data-cover="front"] {
+  cursor: pointer;
+}
+
+.cover[data-cover="front"]:focus-visible {
+  outline: 3px solid #5e7f45;
+  outline-offset: -3px;
 }
 
 .coverImage {
@@ -1658,14 +1282,15 @@ body {
 
 .coverTitle {
   position: absolute;
-  top: 22%;
+  top: 18%;
   left: 50%;
   z-index: 1;
   display: flex;
   width: 52%;
+  margin: 0;
   transform: translate(-50%, -50%);
   flex-direction: column;
-  gap: 0.08em;
+  gap: 0.11em;
   color: #4c3928;
   font-family: "Cormorant Garamond", Garamond, Georgia, serif;
   font-size: clamp(1.15rem, 3vw, 2.7rem);
@@ -1686,14 +1311,6 @@ body {
     width: 104px;
     font-size: 0.88rem;
     padding: 0.36rem 0.65rem;
-  }
-
-  .wkHint {
-    font-size: 2.1rem;
-  }
-
-  .wkPullFrame {
-    margin-top: 142px;
   }
 }
 
@@ -1769,53 +1386,5 @@ body {
 
   .moodTrackerPanel {
     margin-top: 0;
-  }
-
-  .wkCase {
-    min-height: 560px;
-  }
-
-  .wkStage {
-    min-height: 560px;
-  }
-
-  .wkTitleImage {
-    width: min(94%, 460px);
-  }
-
-  .wkHint {
-    font-size: 1.85rem;
-  }
-
-  .wkPullFrame {
-    margin-top: 152px;
-    width: min(88%, 295px);
-  }
-
-  .wkConfettiRow-top {
-    top: 122px;
-    padding: 0 0.65rem;
-  }
-
-  .wkBottomRibbon {
-    gap: 0.3rem;
-  }
-
-  .wkBottomStar {
-    width: 34px;
-    height: 34px;
-  }
-
-  .wkBadge {
-    width: 64px;
-    height: 52px;
-  }
-
-  .wkCasePaper {
-    left: 6px;
-    right: 6px;
-    top: 6px;
-    bottom: 6px;
-    padding: 0.9rem 0.95rem 1rem;
   }
 }

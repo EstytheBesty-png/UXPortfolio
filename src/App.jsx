@@ -10,21 +10,34 @@ const NOTEBOOK_TABS = [
   { label: "Intro", pageIndex: 2, tone: "sun" },
   { label: "Wartekorb", pageIndex: 3, tone: "sage" },
   { label: "Kangrow", pageIndex: 9, tone: "rose" },
-  { label: "Google Maps", pageIndex: 10, tone: "sky" },
-  { label: "Visual Design", pageIndex: 11, tone: "mint" },
-  { label: "Hobbies", pageIndex: 12, tone: "peach" },
-  { label: "Contact", pageIndex: 13, tone: "lilac" },
+  { label: "echo charlie", pageIndex: 10, tone: "sky" },
+  { label: "Visual Design", pageIndex: 15, tone: "mint" },
+  { label: "Hobbies", pageIndex: 16, tone: "peach" },
+  { label: "Contact", pageIndex: 17, tone: "lilac" },
 ];
 
 const TOC_ITEMS = [
   { label: "Intro", pageIndex: 2, pageNumber: 2 },
   { label: "Wartekorb", pageIndex: 3, pageNumber: 3 },
   { label: "Kangrow", pageIndex: 9, pageNumber: 9 },
-  { label: "Google Maps", pageIndex: 10, pageNumber: 10 },
-  { label: "Visual Design Challenges", pageIndex: 11, pageNumber: 11 },
-  { label: "Hobbies", pageIndex: 12, pageNumber: 12 },
-  { label: "Contact", pageIndex: 13, pageNumber: 13 },
+  { label: "echo charlie", pageIndex: 10, pageNumber: 10 },
+  { label: "Visual Design Challenges", pageIndex: 15, pageNumber: 15 },
+  { label: "Hobbies", pageIndex: 16, pageNumber: 16 },
+  { label: "Contact", pageIndex: 17, pageNumber: 17 },
 ];
+
+function SectionKicker({ label, part, total }) {
+  return (
+    <p className="sectionKicker">
+      <span className="sectionKickerLabel">{label}</span>
+      {part && total ? (
+        <span className="sectionKickerPart">
+          Part {part} of {total}
+        </span>
+      ) : null}
+    </p>
+  );
+}
 
 const MOOD_OPTIONS = [
   { label: "Happy", icon: "😊" },
@@ -42,7 +55,6 @@ const MOOD_OPTIONS = [
 
 function App() {
   const bookRef = useRef();
-  const startPromptHideTimerRef = useRef(null);
   const lightboxCloseButtonRef = useRef(null);
   const lastFocusedElementRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -117,25 +129,29 @@ function App() {
   };
 
   const hideStartPrompt = () => {
-    if (startPromptHideTimerRef.current) {
-      window.clearTimeout(startPromptHideTimerRef.current);
-    }
-
-    startPromptHideTimerRef.current = window.setTimeout(() => {
-      setShowStartPrompt(false);
-      startPromptHideTimerRef.current = null;
-    }, 1400);
+    setShowStartPrompt(false);
   };
 
-  const handleCoverPointerDown = (event) => {
+  const flipCoverOpen = () => {
     hideStartPrompt();
-    event.preventDefault();
-    event.stopPropagation();
-
     const pageFlip = bookRef.current?.pageFlip();
     if (pageFlip) {
       pageFlip.flip(1, "top");
     }
+  };
+
+  const handleCoverPointerDown = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    flipCoverOpen();
+  };
+
+  const handleCoverKeyDown = (event) => {
+    if (event.key !== "Enter" && event.key !== " ") {
+      return;
+    }
+    event.preventDefault();
+    flipCoverOpen();
   };
 
   const handleTabJump = (pageIndex) => {
@@ -161,7 +177,7 @@ function App() {
 
   const handleBookPointerDown = (event) => {
     const interactiveTarget = event.target.closest?.("button, a, input, textarea, select");
-    const frontCover = event.target.closest?.('[aria-label="Journal cover"]');
+    const frontCover = event.target.closest?.('[data-cover="front"]');
     if (frontCover) {
       handleCoverPointerDown(event);
       return;
@@ -196,6 +212,15 @@ function App() {
 
   const closeLightbox = () => {
     setLightboxImage(null);
+  };
+
+  const handleLightboxKeyDown = (event) => {
+    if (event.key !== "Tab") {
+      return;
+    }
+    // Close is the only focusable control, so keep focus trapped on it.
+    event.preventDefault();
+    lightboxCloseButtonRef.current?.focus();
   };
 
   const availableWidth = Math.max(320, viewport.width - VIEWPORT_SIDE_GAP);
@@ -233,13 +258,15 @@ function App() {
             onMouseDownCapture={handleBookPointerDown}
             onTouchStartCapture={handleBookPointerDown}
           >
-            {showStartPrompt && !isOpen && (
-              <aside className="startPrompt" aria-label="How to begin">
-                <span className="startPromptTitle">LET&apos;S START THE JOURNEY</span>
-                <span className="startPromptArrow" aria-hidden="true">✧</span>
-                <span className="startPromptHint">flip to begin</span>
-              </aside>
-            )}
+            <aside
+              className={`startPrompt${showStartPrompt && !isOpen ? "" : " startPrompt-hidden"}`}
+              aria-label="How to begin"
+              aria-hidden={!(showStartPrompt && !isOpen)}
+            >
+              <span className="startPromptTitle">LET&apos;S START THE JOURNEY</span>
+              <span className="startPromptArrow" aria-hidden="true">✧</span>
+              <span className="startPromptHint">flip to begin</span>
+            </aside>
 
             <HTMLFlipBook
               ref={bookRef}
@@ -264,17 +291,21 @@ function App() {
             >
               <section
                 className="page cover"
-                aria-label="Journal cover"
+                aria-label="Open journal cover to begin"
+                role="button"
+                tabIndex={0}
+                data-cover="front"
+                onKeyDown={handleCoverKeyDown}
               >
                 <img
-                  src="/assets/Cover page 2.0.jpeg"
-                  alt="Journal cover"
+                  src="/assets/Front Cover paint 3.0.jpeg"
+                  alt=""
                   className="coverImage"
                 />
-                <div className="coverTitle" aria-label="Estelle's UX Portfolio">
+                <h1 className="coverTitle">
                   <span>Estelle&apos;s UX</span>
                   <span>Portfolio</span>
-                </div>
+                </h1>
               </section>
 
               <section className="page tocPage" data-page-number="1">
@@ -295,7 +326,7 @@ function App() {
                 </ul>
               </section>
 
-              <section className="page aboutMePage" data-page-number="2">
+              <section className="page aboutMePage" data-tone="sun" data-page-number="2">
                 <h2>Intro</h2>
                 <div className="aboutMeLayout">
                   <div className="aboutMeSection">
@@ -330,7 +361,7 @@ function App() {
                   <div className="moodTrackerPanel">
                     <h3>Mood Tracker</h3>
                     <p>How are you feeling today?</p>
-                    <div className="moodTrackerGrid" aria-label="Mood tracker options">
+                    <div className="moodTrackerGrid" role="group" aria-label="Mood tracker options">
                       {MOOD_OPTIONS.map((mood) => (
                         <button
                           type="button"
@@ -367,10 +398,12 @@ function App() {
               <section
                 className="page wartekorbChallengePage"
                 aria-label="Wartekorb page"
+                data-tone="sage"
                 data-page-number="3"
               >
-                <div className="wartekorbChallengeLayout grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                <div className="wartekorbChallengeLayout">
                   <div className="wartekorbChallengeCopy">
+                    <SectionKicker label="Wartekorb" part={1} total={6} />
                     <h2 className="wartekorbChallengeTitle">
                       The Challenge: Designing Against the Flow
                     </h2>
@@ -401,7 +434,7 @@ function App() {
                       Developed during my Master of User Experience Design at FHGR, this project was a highly collaborative effort by a product team of five. Rather than dividing into specialized roles, each of us actively participated in every step of the end-to-end design process. To introduce ourselves, we leaned directly into the problem space, presenting our team as a grid of "impulse buys" within a typical e-commerce interface to immediately set the thematic stage.
                     </p>
                   </div>
-                  <div className="wartekorbChallengeMedia flex flex-col gap-6 items-start">
+                  <div className="wartekorbChallengeMedia">
                     <button
                       type="button"
                       className="wartekorbImageButton"
@@ -438,7 +471,7 @@ function App() {
                         className="wartekorbChallengeImage wartekorbTeamImage"
                       />
                     </button>
-                    <p className="text-sm italic mt-2">
+                    <p className="wartekorbTeamNote">
                       (Note: Team member identities have been intentionally obfuscated to
                       maintain professional privacy).
                     </p>
@@ -446,8 +479,9 @@ function App() {
                 </div>
               </section>
 
-              <section className="page pageFourCaseStudy" aria-label="Wartekorb page" data-page-number="4">
+              <section className="page pageFourCaseStudy" aria-label="Wartekorb page" data-tone="sage" data-page-number="4">
                 <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <SectionKicker label="Wartekorb" part={2} total={6} />
                   <h2 className="wartekorbChallengeTitle">The Pivot</h2>
                   <p className="wartekorbChallengeText">
                     Our initial focus was on mitigating impulsive buying to support SDG 12
@@ -565,8 +599,9 @@ function App() {
                 </div>
               </section>
 
-              <section className="page pageFourCaseStudy" aria-label="Wartekorb page" data-page-number="5">
+              <section className="page pageFourCaseStudy" aria-label="Wartekorb page" data-tone="sage" data-page-number="5">
                 <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <SectionKicker label="Wartekorb" part={3} total={6} />
                   <h2 className="wartekorbChallengeTitle">The Core Challenge (How Might We)</h2>
                   <p className="wartekorbChallengeText">
                     &ldquo;How might we help consumption-oriented people sustainably reduce their
@@ -630,8 +665,9 @@ function App() {
                 </div>
               </section>
 
-              <section className="page pageFourCaseStudy" aria-label="Wartekorb research page" data-page-number="6">
+              <section className="page pageFourCaseStudy" aria-label="Wartekorb research page" data-tone="sage" data-page-number="6">
                 <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <SectionKicker label="Wartekorb" part={4} total={6} />
                   <h3 className="wartekorbChallengeSubheading">Defining the Critical Path (Storyboard)</h3>
                   <p className="wartekorbChallengeText">
                     We synthesized our individual concepts into a single, unified user journey. We
@@ -701,9 +737,11 @@ function App() {
               <section
                 className="page pageFourCaseStudy pageSevenDesignPage"
                 aria-label="Wartekorb concept page"
+                data-tone="sage"
                 data-page-number="7"
               >
                 <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <SectionKicker label="Wartekorb" part={5} total={6} />
                   <h3 className="wartekorbChallengeSubheading">
                     The Design System: Form Meets Function
                   </h3>
@@ -791,9 +829,11 @@ function App() {
               <section
                 className="page pageFourCaseStudy pageEightPrototypePage"
                 aria-label="Wartekorb testing page"
+                data-tone="sage"
                 data-page-number="8"
               >
                 <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <SectionKicker label="Wartekorb" part={6} total={6} />
                   <h3 className="wartekorbChallengeSubheading">
                     Information Architecture &amp; Structural Testing
                   </h3>
@@ -846,24 +886,62 @@ function App() {
                     className="wartekorbChallengeImage pageEightPrototypeImage"
                   />
                 </button>
+                <p className="sectionEndNote">— End of Wartekorb case study —</p>
               </section>
 
-              <section className="page" data-page-number="9">
+              <section className="page" data-tone="rose" data-page-number="9">
                 <h2>Kangrow</h2>
                 <p>Case study preview.</p>
               </section>
 
-              <section className="page" data-page-number="10">
-                <h2>Google Maps</h2>
-                <p>Case study preview.</p>
+              <section className="page pageFourCaseStudy" aria-label="echo charlie page" data-tone="sky" data-page-number="10">
+                <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <SectionKicker label="echo charlie" part={1} total={5} />
+                  <h2 className="wartekorbChallengeTitle">echo charlie</h2>
+                  <h3 className="wartekorbChallengeSubheading">The Challenge</h3>
+                  <p className="wartekorbChallengeText">Add challenge description here.</p>
+                </div>
               </section>
 
-              <section className="page" data-page-number="11">
+              <section className="page pageFourCaseStudy" aria-label="echo charlie page" data-tone="sky" data-page-number="11">
+                <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <SectionKicker label="echo charlie" part={2} total={5} />
+                  <h3 className="wartekorbChallengeSubheading">Research &amp; Discovery</h3>
+                  <p className="wartekorbChallengeText">Add research findings here.</p>
+                </div>
+              </section>
+
+              <section className="page pageFourCaseStudy" aria-label="echo charlie page" data-tone="sky" data-page-number="12">
+                <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <SectionKicker label="echo charlie" part={3} total={5} />
+                  <h3 className="wartekorbChallengeSubheading">Design Exploration</h3>
+                  <p className="wartekorbChallengeText">Add design exploration content here.</p>
+                </div>
+              </section>
+
+              <section className="page pageFourCaseStudy" aria-label="echo charlie page" data-tone="sky" data-page-number="13">
+                <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <SectionKicker label="echo charlie" part={4} total={5} />
+                  <h3 className="wartekorbChallengeSubheading">Prototype &amp; Testing</h3>
+                  <p className="wartekorbChallengeText">Add prototype and testing details here.</p>
+                </div>
+              </section>
+
+              <section className="page pageFourCaseStudy" aria-label="echo charlie page" data-tone="sky" data-page-number="14">
+                <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <SectionKicker label="echo charlie" part={5} total={5} />
+                  <h3 className="wartekorbChallengeSubheading">Reflection &amp; Outcomes</h3>
+                  <p className="wartekorbChallengeText">Add reflection and outcomes here.</p>
+                </div>
+                <p className="sectionEndNote">— End of echo charlie case study —</p>
+              </section>
+
+              <section className="page" data-tone="mint" data-page-number="15">
                 <h2>Visual Design Challenges</h2>
                 <p>Show two visual design projects here.</p>
               </section>
 
-              <section className="page aboutMePage" data-page-number="12">
+              <section className="page aboutMePage" data-tone="peach" data-page-number="16">
                 <h2>Hobbies</h2>
                 <div className="aboutMeLayout">
                   <div className="aboutMeSection">
@@ -880,14 +958,14 @@ function App() {
                 </div>
               </section>
 
-              <section className="page" data-page-number="13">
+              <section className="page" data-tone="lilac" data-page-number="17">
                 <h2>Contact</h2>
                 <p>Add your email, LinkedIn, portfolio links, or CV here.</p>
               </section>
 
               <section className="page cover" aria-label="Journal back cover">
                 <img
-                  src="/assets/Back Cover 2.0.jpeg"
+                  src="/assets/Back Cover paint 3.0.jpeg"
                   alt="Journal back cover"
                   className="coverImage"
                 />
@@ -919,6 +997,7 @@ function App() {
           aria-modal="true"
           aria-label="Expanded image preview"
           onClick={closeLightbox}
+          onKeyDown={handleLightboxKeyDown}
         >
           <div className="lightboxBackdrop" aria-hidden="true" />
           <div
