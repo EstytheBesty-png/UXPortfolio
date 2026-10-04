@@ -207,7 +207,7 @@ body {
 .sideTab {
   width: 128px;
   padding: 0.5rem 0.9rem;
-  border: 1px solid rgba(122, 89, 55, 0.58);
+  border: 1px solid var(--side-tab-accent);
   border-left: 0;
   border-radius: 0 12px 12px 0;
   color: #423022;
@@ -216,6 +216,11 @@ body {
   font-weight: 700;
   letter-spacing: 0.025em;
   text-align: left;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--side-tab-accent) 18%, white) 0%,
+    color-mix(in srgb, var(--side-tab-accent) 34%, white) 100%
+  );
   box-shadow:
     8px 8px 16px rgba(78, 57, 39, 0.26),
     inset 0 1px 0 rgba(255, 255, 255, 0.42);
@@ -232,35 +237,35 @@ body {
 }
 
 .sideTab-sage {
-  background: linear-gradient(135deg, #d8f0c8 0%, #bde38f 100%);
+  --side-tab-accent: #5e7f45;
 }
 
 .sideTab-rose {
-  background: linear-gradient(135deg, #ffd1d8 0%, #ffafc0 100%);
+  --side-tab-accent: #c9677c;
 }
 
 .sideTab-wheat {
-  background: linear-gradient(135deg, #ffe5b2 0%, #ffc97e 100%);
+  --side-tab-accent: #b8860b;
 }
 
 .sideTab-mint {
-  background: linear-gradient(135deg, #ccf5e5 0%, #9fe8cd 100%);
+  --side-tab-accent: #2f9c78;
 }
 
 .sideTab-peach {
-  background: linear-gradient(135deg, #ffdcb8 0%, #ffbd89 100%);
+  --side-tab-accent: #c97a3f;
 }
 
 .sideTab-lilac {
-  background: linear-gradient(135deg, #ebddff 0%, #cfb4ff 100%);
+  --side-tab-accent: #7a5fc9;
 }
 
 .sideTab-sun {
-  background: linear-gradient(135deg, #ffe7a8 0%, #ffc86a 100%);
+  --side-tab-accent: #b8860b;
 }
 
 .sideTab-sky {
-  background: linear-gradient(135deg, #cae9ff 0%, #97d2ff 100%);
+  --side-tab-accent: #2f7fb0;
 }
 
 .page {
@@ -782,6 +787,12 @@ body {
   text-align: left;
 }
 
+.echoCharlieJtbdQuote {
+  margin: 0;
+  padding: 0.35rem 0.75rem;
+  border-left: 3px solid var(--tone-accent);
+}
+
 .wartekorbChallengeSubheading {
   margin: 0.4rem 0 0;
   color: var(--tone-accent, #6d4a2f);
@@ -835,6 +846,29 @@ body {
   justify-content: center;
   align-self: stretch;
   padding-top: 0;
+}
+
+.wartekorbVisualStrategyLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 38%);
+  gap: 1rem;
+  align-items: start;
+}
+
+.wartekorbVisualStrategyMedia {
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.wartekorbVisualStrategyMedia .wartekorbImageButton,
+.wartekorbVisualStrategyImage {
+  width: 100%;
+}
+
+.wartekorbVisualStrategyImage {
+  height: auto;
+  max-width: none;
+  object-fit: contain;
 }
 
 .wartekorbTeamNote {
@@ -942,6 +976,40 @@ body {
 .pageFourCaseStudy .wartekorbChallengeText {
   font-size: clamp(0.98rem, 1.06vw, 1.12rem);
   line-height: 1.48;
+}
+
+.echoCharlieChallengeIntro {
+  display: block;
+}
+
+.echoCharlieProjectGoal {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  align-items: center;
+  gap: 1rem;
+}
+
+.echoCharlieChallengeImageButton {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+  line-height: 0;
+}
+
+.echoCharlieChallengeImageButton:focus-visible {
+  outline: 3px solid var(--tone-accent);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.echoCharlieChallengeImage {
+  display: block;
+  width: 100%;
+  max-height: 17rem;
+  object-fit: contain;
 }
 
 .pageFourCaseStudy .pageFourImageColumn {
@@ -1076,6 +1144,10 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .wartekorbVisualStrategyLayout {
+    grid-template-columns: 1fr;
+  }
+
   .wartekorbChallengeMedia {
     align-items: center;
     justify-content: center;
@@ -1107,6 +1179,19 @@ body {
 
   .pageFourTextFlow {
     padding-right: 0;
+  }
+
+  .echoCharlieProjectGoal {
+    grid-template-columns: 1fr;
+  }
+
+  .echoCharlieChallengeImageButton {
+    justify-self: center;
+    max-width: 25rem;
+  }
+
+  .echoCharlieChallengeImage {
+    max-height: min(22vh, 13rem);
   }
 
   .pageFourCaseStudy .pageFourImageGrid {

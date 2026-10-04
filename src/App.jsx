@@ -11,9 +11,9 @@ const NOTEBOOK_TABS = [
   { label: "Wartekorb", pageIndex: 3, tone: "sage" },
   { label: "Kangrow", pageIndex: 9, tone: "rose" },
   { label: "echo charlie", pageIndex: 10, tone: "sky" },
-  { label: "Visual Design", pageIndex: 15, tone: "mint" },
-  { label: "Hobbies", pageIndex: 16, tone: "peach" },
-  { label: "Contact", pageIndex: 17, tone: "lilac" },
+  { label: "Visual Design", pageIndex: 16, tone: "mint" },
+  { label: "Hobbies", pageIndex: 17, tone: "peach" },
+  { label: "Contact", pageIndex: 18, tone: "lilac" },
 ];
 
 const TOC_ITEMS = [
@@ -21,9 +21,9 @@ const TOC_ITEMS = [
   { label: "Wartekorb", pageIndex: 3, pageNumber: 3 },
   { label: "Kangrow", pageIndex: 9, pageNumber: 9 },
   { label: "echo charlie", pageIndex: 10, pageNumber: 10 },
-  { label: "Visual Design Challenges", pageIndex: 15, pageNumber: 15 },
-  { label: "Hobbies", pageIndex: 16, pageNumber: 16 },
-  { label: "Contact", pageIndex: 17, pageNumber: 17 },
+  { label: "Visual Design Challenges", pageIndex: 16, pageNumber: 16 },
+  { label: "Hobbies", pageIndex: 17, pageNumber: 17 },
+  { label: "Contact", pageIndex: 18, pageNumber: 18 },
 ];
 
 function SectionKicker({ label, part, total }) {
@@ -704,33 +704,75 @@ function App() {
                   </button>
 
                   <h2 className="wartekorbChallengeTitle">Visual Strategy &amp; Art Direction</h2>
-                  <h3 className="wartekorbChallengeSubheading">Strategic Visual Divergence</h3>
-                  <p className="wartekorbChallengeText">
-                    To establish our brand identity, we explored two starkly divergent visual
-                    paths: a calm, minimalist aesthetic (typical for mindfulness tools) and a
-                    highly vibrant, stimulating direction.
-                  </p>
+                  <div className="wartekorbVisualStrategyLayout">
+                    <div className="wartekorbChallengeCopy">
+                      <h3 className="wartekorbChallengeSubheading">Strategic Visual Divergence</h3>
+                      <p className="wartekorbChallengeText">
+                        To establish our brand identity, we explored two starkly divergent visual
+                        paths: a calm, minimalist aesthetic (typical for mindfulness tools) and a
+                        highly vibrant, stimulating direction.
+                      </p>
 
-                  <h3 className="wartekorbChallengeSubheading">The Design Rationale</h3>
-                  <p className="wartekorbChallengeText">
-                    We strategically selected the Vibrant direction. We realized that to
-                    successfully intercept a user during an impulse-buying high, our app could
-                    not feel like a boring, restrictive financial tool. It needed to be just as
-                    visually engaging and energetic as the e-commerce platforms they were
-                    browsing. This allowed us to build a fresh, gamified, and distinct design
-                    system that makes intentional friction feel rewarding.
-                  </p>
+                      <h3 className="wartekorbChallengeSubheading">The Design Rationale</h3>
+                      <p className="wartekorbChallengeText">
+                        We strategically selected the Vibrant direction. We realized that to
+                        successfully intercept a user during an impulse-buying high, our app could
+                        not feel like a boring, restrictive financial tool. It needed to be just as
+                        visually engaging and energetic as the e-commerce platforms they were
+                        browsing. This allowed us to build a fresh, gamified, and distinct design
+                        system that makes intentional friction feel rewarding.
+                      </p>
 
-                  <h3 className="wartekorbChallengeSubheading">
-                    Brand Identity: Disrupting &ldquo;Eco&rdquo; Tropes
-                  </h3>
-                  <p className="wartekorbChallengeText">
-                    We intentionally avoided the muted, nature-based aesthetics typical of
-                    sustainability tools. To effectively intercept impulse buyers, the app needed
-                    to mirror the high-energy, dopamine-driven environment of e-commerce. We
-                    developed a bold, expressive identity that reframes &ldquo;restraint&rdquo; not as a
-                    restriction, but as a playful, empowering choice.
-                  </p>
+                      <h3 className="wartekorbChallengeSubheading">
+                        Brand Identity: Disrupting &ldquo;Eco&rdquo; Tropes
+                      </h3>
+                      <p className="wartekorbChallengeText">
+                        We intentionally avoided the muted, nature-based aesthetics typical of
+                        sustainability tools. To effectively intercept impulse buyers, the app
+                        needed to mirror the high-energy, dopamine-driven environment of e-commerce.
+                        We developed a bold, expressive identity that reframes &ldquo;restraint&rdquo; not
+                        as a restriction, but as a playful, empowering choice.
+                      </p>
+                    </div>
+                    <div className="wartekorbChallengeMedia wartekorbVisualStrategyMedia">
+                      <button
+                        type="button"
+                        className="wartekorbImageButton"
+                        onPointerDownCapture={stopBookFlipEvent}
+                        onMouseDownCapture={stopBookFlipEvent}
+                        onTouchStartCapture={stopBookFlipEvent}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          openLightbox("/assets/vibrant visuelle Idee.png", "Vibrant visual strategy moodboard");
+                        }}
+                        aria-label="Open larger vibrant visual strategy image"
+                      >
+                        <img
+                          src="/assets/vibrant visuelle Idee.png"
+                          alt="Vibrant visual strategy moodboard"
+                          className="wartekorbChallengeImage wartekorbVisualStrategyImage"
+                        />
+                      </button>
+                      <button
+                        type="button"
+                        className="wartekorbImageButton"
+                        onPointerDownCapture={stopBookFlipEvent}
+                        onMouseDownCapture={stopBookFlipEvent}
+                        onTouchStartCapture={stopBookFlipEvent}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          openLightbox("/assets/Ruhigere visuelle Idee.png", "Calmer visual strategy moodboard");
+                        }}
+                        aria-label="Open larger calmer visual strategy image"
+                      >
+                        <img
+                          src="/assets/Ruhigere visuelle Idee.png"
+                          alt="Calmer visual strategy moodboard"
+                          className="wartekorbChallengeImage wartekorbVisualStrategyImage"
+                        />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </section>
 
@@ -896,24 +938,140 @@ function App() {
 
               <section className="page pageFourCaseStudy" aria-label="echo charlie page" data-tone="sky" data-page-number="10">
                 <div className="wartekorbChallengeCopy pageFourTextFlow">
-                  <SectionKicker label="echo charlie" part={1} total={5} />
-                  <h2 className="wartekorbChallengeTitle">echo charlie</h2>
-                  <h3 className="wartekorbChallengeSubheading">The Challenge</h3>
-                  <p className="wartekorbChallengeText">Add challenge description here.</p>
+                  <SectionKicker label="echo charlie" part={1} total={6} />
+                  <div className="echoCharlieChallengeIntro">
+                    <h2 className="wartekorbChallengeTitle">The Challenge: The Gap on the Wrist</h2>
+                    <p className="wartekorbChallengeText">
+                      In clinical dental environments, every second and every physical touchpoint
+                      matters. While practice communication systems run seamlessly across desktop
+                      workstations and wall-mounted tablets, mobile staff members remain stranded
+                      at the point of care. Relying on stationary screens creates critical workflow
+                      delays, breaks sterile procedures, and pulls staff away from patient treatment
+                      simply to confirm routine messages.
+                    </p>
+                  </div>
+
+                  <div className="echoCharlieProjectGoal">
+                    <div>
+                      <h3 className="wartekorbChallengeSubheading">Project Goal</h3>
+                      <p className="wartekorbChallengeText">
+                        Develop a native Apple Watch application that transforms static, one-way
+                        push notifications into a bidirectional communication channel. Operating on
+                        the clinic&apos;s core &ldquo;WHO&ndash;WHAT&ndash;WHERE&rdquo; principle, the interface must
+                        enable split-second replies and mode toggling directly from the wrist
+                        without violating strict clinical hygiene protocols.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      className="echoCharlieChallengeImageButton"
+                      onClick={() =>
+                        openLightbox(
+                          "/assets/echo-charlie-kompatible-geraete.png.webp",
+                          "Compatible echo charlie devices: laptop, tablet, phone, smartwatch, status buttons, and call button",
+                        )
+                      }
+                      aria-label="Open compatible echo charlie devices image"
+                    >
+                      <img
+                        src="/assets/echo-charlie-kompatible-geraete.png.webp"
+                        alt="Laptop, tablet, phone, smartwatch, status buttons, and call button in the echo charlie communication system"
+                        className="echoCharlieChallengeImage"
+                      />
+                    </button>
+                  </div>
+
+                  <h3 className="wartekorbChallengeSubheading">The Context &amp; The Bottleneck</h3>
+                  <p className="wartekorbChallengeText">
+                    Graub&uuml;nden-based startup &laquo;echo charlie&raquo; established an efficient
+                    communication network for dental practices, but their smartwatch integration
+                    was strictly passive. Highly mobile dental assistants had to de-glove,
+                    interrupt sterile workflows, and walk to wall terminals just to confirm receipt
+                    of a summons. The objective was to eliminate this physical friction entirely.
+                  </p>
+
+                  <h3 className="wartekorbChallengeSubheading">The Team &amp; Collaboration</h3>
+                  <p className="wartekorbChallengeText">
+                    Developed as part of a consultancy project during the Master of User Experience
+                    Design at FHGR Chur. Working in an agile team of three, we shared
+                    responsibilities across contextual research, clinical synthesis, and
+                    interaction architecture. Rather than siloing research from design, all three
+                    team members engaged directly with clinical staff to ground our technical
+                    constraints in genuine workplace realities.
+                  </p>
+
                 </div>
               </section>
 
               <section className="page pageFourCaseStudy" aria-label="echo charlie page" data-tone="sky" data-page-number="11">
                 <div className="wartekorbChallengeCopy pageFourTextFlow">
-                  <SectionKicker label="echo charlie" part={2} total={5} />
-                  <h3 className="wartekorbChallengeSubheading">Research &amp; Discovery</h3>
-                  <p className="wartekorbChallengeText">Add research findings here.</p>
+                  <SectionKicker label="echo charlie" part={2} total={6} />
+                  <h2 className="wartekorbChallengeTitle">
+                    The Pivot: Designing for &ldquo;Bare Below the Elbows&rdquo;
+                  </h2>
+                  <p className="wartekorbChallengeText">
+                    Our initial brief assumed a standard smartwatch worn continuously on the wrist.
+                    However, during our contextual inquiry across four active dental clinics, we
+                    ran into an immediate clinical wall: hospital-grade infection prevention
+                    standards (&ldquo;Bare Below the Elbows&rdquo;) strictly prohibit wrist jewelry and
+                    watches during surgical procedures. To build a viable product, we strategically
+                    pivoted our hardware interaction model from a wrist-bound wearable to a dynamic
+                    &ldquo;Smart-Fob.&rdquo;
+                  </p>
+
+                  <h3 className="wartekorbChallengeSubheading">The Core User Needs (JTBD)</h3>
+                  <p className="wartekorbChallengeText">
+                    We synthesized the qualitative friction observed during shadowing into a guiding
+                    Job-To-Be-Done statement:
+                  </p>
+                  <blockquote className="echoCharlieJtbdQuote">
+                    <p className="wartekorbChallengeText">
+                      <em>
+                        &ldquo;When I am assisting in a sterile treatment or operating machinery, I want
+                        to acknowledge urgent practice requests with a single glance and tap, so I
+                        can keep the team synchronized without contaminating my hands or abandoning
+                        my patient.&rdquo;
+                      </em>
+                    </p>
+                  </blockquote>
+
+                  <h3 className="wartekorbChallengeSubheading">
+                    Key Insights &amp; Architectural Decisions
+                  </h3>
+                  <p className="wartekorbChallengeText">
+                    By cross-referencing our clinic shadowing with quantitative validation from 78
+                    dental professionals, we uncovered three decisive constraints:
+                  </p>
+
+                  <h3 className="wartekorbChallengeSubheading">The Inverted Interface (The Smart-Fob)</h3>
+                  <p className="wartekorbChallengeText">
+                    Because 59% of clinics permit smartwatches only under strict conditions, the UI
+                    was engineered to support a 180-degree inverted display mode, allowing the
+                    device to be clipped to scrub pockets like a traditional nurse&apos;s watch.
+                  </p>
+
+                  <h3 className="wartekorbChallengeSubheading">
+                    Acoustic Blindness vs. Silent Routing
+                  </h3>
+                  <p className="wartekorbChallengeText">
+                    Autoclaves and suction tools drown out audio cues, while loud chimes distress
+                    patients. We replaced uniform alerts with a tiered haptic and visual
+                    notification engine, reserving audible overrides exclusively for medical
+                    emergencies.
+                  </p>
+
+                  <h3 className="wartekorbChallengeSubheading">The 5-Second Micro-Interaction</h3>
+                  <p className="wartekorbChallengeText">
+                    76% of practitioners cited coordination interruptions as their top operational
+                    headache. We replaced multi-step navigation with a high-contrast 3-button
+                    &ldquo;Instant Reply&rdquo; matrix (<em>Coming / Delayed / Come Here</em>).
+                  </p>
                 </div>
               </section>
 
               <section className="page pageFourCaseStudy" aria-label="echo charlie page" data-tone="sky" data-page-number="12">
                 <div className="wartekorbChallengeCopy pageFourTextFlow">
-                  <SectionKicker label="echo charlie" part={3} total={5} />
+                  <SectionKicker label="echo charlie" part={3} total={6} />
                   <h3 className="wartekorbChallengeSubheading">Design Exploration</h3>
                   <p className="wartekorbChallengeText">Add design exploration content here.</p>
                 </div>
@@ -921,7 +1079,7 @@ function App() {
 
               <section className="page pageFourCaseStudy" aria-label="echo charlie page" data-tone="sky" data-page-number="13">
                 <div className="wartekorbChallengeCopy pageFourTextFlow">
-                  <SectionKicker label="echo charlie" part={4} total={5} />
+                  <SectionKicker label="echo charlie" part={4} total={6} />
                   <h3 className="wartekorbChallengeSubheading">Prototype &amp; Testing</h3>
                   <p className="wartekorbChallengeText">Add prototype and testing details here.</p>
                 </div>
@@ -929,19 +1087,27 @@ function App() {
 
               <section className="page pageFourCaseStudy" aria-label="echo charlie page" data-tone="sky" data-page-number="14">
                 <div className="wartekorbChallengeCopy pageFourTextFlow">
-                  <SectionKicker label="echo charlie" part={5} total={5} />
+                  <SectionKicker label="echo charlie" part={5} total={6} />
                   <h3 className="wartekorbChallengeSubheading">Reflection &amp; Outcomes</h3>
                   <p className="wartekorbChallengeText">Add reflection and outcomes here.</p>
+                </div>
+              </section>
+
+              <section className="page pageFourCaseStudy" aria-label="echo charlie page" data-tone="sky" data-page-number="15">
+                <div className="wartekorbChallengeCopy pageFourTextFlow">
+                  <SectionKicker label="echo charlie" part={6} total={6} />
+                  <h3 className="wartekorbChallengeSubheading">Final Reflection</h3>
+                  <p className="wartekorbChallengeText">Add final reflections here.</p>
                 </div>
                 <p className="sectionEndNote">— End of echo charlie case study —</p>
               </section>
 
-              <section className="page" data-tone="mint" data-page-number="15">
+              <section className="page" data-tone="mint" data-page-number="16">
                 <h2>Visual Design Challenges</h2>
                 <p>Show two visual design projects here.</p>
               </section>
 
-              <section className="page aboutMePage" data-tone="peach" data-page-number="16">
+              <section className="page aboutMePage" data-tone="peach" data-page-number="17">
                 <h2>Hobbies</h2>
                 <div className="aboutMeLayout">
                   <div className="aboutMeSection">
@@ -958,7 +1124,7 @@ function App() {
                 </div>
               </section>
 
-              <section className="page" data-tone="lilac" data-page-number="17">
+              <section className="page" data-tone="lilac" data-page-number="18">
                 <h2>Contact</h2>
                 <p>Add your email, LinkedIn, portfolio links, or CV here.</p>
               </section>
